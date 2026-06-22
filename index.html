@@ -52,6 +52,7 @@ body {
   transition: all 0.2s;
 }
 .icon-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+.icon-btn.active { background: rgba(255,107,58,0.2); border-color: rgba(255,107,58,0.4); color: #ff6b3a; }
 
 /* Tabs */
 .tabs {
@@ -374,27 +375,6 @@ textarea::placeholder, input::placeholder { color: #555; }
   font-size: 13px;
 }
 
-/* Install banner */
-.install-banner {
-  display: none;
-  background: linear-gradient(135deg, rgba(0,200,255,0.15), rgba(0,114,255,0.15));
-  border: 1px solid rgba(0,200,255,0.2);
-  border-radius: 12px;
-  padding: 12px 16px;
-  margin-bottom: 12px;
-  font-size: 13px;
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.install-banner .btn { padding: 6px 16px; font-size: 12px; }
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-
 /* Color picker */
 .color-options {
   display: flex;
@@ -413,6 +393,257 @@ textarea::placeholder, input::placeholder { color: #555; }
   border-color: #fff;
   transform: scale(1.15);
 }
+
+/* ===== 社会主义群 GROUP PAGE ===== */
+.group-banner {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24, #ffd700);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.group-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+  animation: shimmer 3s infinite;
+}
+@keyframes shimmer {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.group-banner h2 {
+  font-size: 26px;
+  margin-bottom: 6px;
+  position: relative;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.group-banner .members {
+  font-size: 13px;
+  color: rgba(0,0,0,0.6);
+  position: relative;
+  font-weight: bold;
+}
+
+.fun-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.fun-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.fun-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,215,0,0.3);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+.fun-card:active { transform: scale(0.96); }
+.fun-card .emoji { font-size: 36px; margin-bottom: 8px; }
+.fun-card .label { font-size: 14px; font-weight: bold; color: var(--text); }
+.fun-card .desc { font-size: 11px; color: #666; margin-top: 4px; }
+
+/* Fun result display */
+.fun-result {
+  background: linear-gradient(135deg, rgba(255,107,107,0.1), rgba(255,215,0,0.1));
+  border: 2px solid rgba(255,215,0,0.2);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 12px;
+  animation: popIn 0.3s ease;
+}
+.fun-result .who {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.fun-result .name {
+  font-size: 30px;
+  font-weight: bold;
+  color: #ff6b6b;
+  text-shadow: 0 0 15px rgba(255,107,107,0.4);
+}
+.fun-result .what {
+  font-size: 16px;
+  color: var(--gold);
+  margin-top: 8px;
+  padding: 8px 16px;
+  background: rgba(255,215,0,0.1);
+  border-radius: 10px;
+  display: inline-block;
+}
+.fun-result .sub { font-size: 12px; color: #888; margin-top: 8px; }
+
+/* Member tags */
+.member-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 10px 0 16px;
+}
+.member-tag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(255,107,107,0.15);
+  border: 1px solid rgba(255,107,107,0.2);
+  color: #ff6b6b;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* Score board */
+.score-board {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.score-item {
+  flex: 1;
+  min-width: 70px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+}
+.score-item .s-emoji { font-size: 20px; }
+.score-item .s-name { font-size: 11px; color: var(--text-dim); margin: 2px 0; }
+.score-item .s-score { font-size: 22px; font-weight: bold; color: var(--gold); }
+.score-item .s-score.first { color: #ff6b6b; text-shadow: 0 0 10px rgba(255,107,107,0.5); }
+
+/* Dice result */
+.dice-area {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.dice-player {
+  text-align: center;
+}
+.dice-player .d-name { font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
+.dice-player .d-dice { font-size: 50px; animation: diceRoll 0.5s ease; }
+.dice-player .d-score { font-size: 14px; color: var(--gold); font-weight: bold; margin-top: 4px; }
+.dice-player .d-win { color: #ff6b6b; font-size: 16px; text-shadow: 0 0 10px rgba(255,107,107,0.5); }
+
+@keyframes diceRoll {
+  0% { transform: rotate(0deg) scale(0.5); opacity: 0; }
+  50% { transform: rotate(180deg) scale(1.3); }
+  100% { transform: rotate(360deg) scale(1); opacity: 1; }
+}
+
+/* Quiz */
+.quiz-question {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  line-height: 1.5;
+  text-align: center;
+}
+.quiz-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.quiz-opt {
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+.quiz-opt:hover { border-color: var(--primary); background: rgba(0,200,255,0.1); }
+.quiz-opt.correct { border-color: #2ecc71; background: rgba(46,204,113,0.2); color: #2ecc71; }
+.quiz-opt.wrong { border-color: #e74c3c; background: rgba(231,76,60,0.2); color: #e74c3c; }
+
+/* Vote */
+.vote-bar-wrap {
+  margin: 8px 0;
+}
+.vote-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.vote-bar {
+  height: 24px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.vote-fill {
+  height: 100%;
+  border-radius: 12px;
+  transition: width 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+  min-width: 30px;
+}
+
+/* King game */
+.king-role {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  margin: 6px 0;
+}
+.king-role .k-name { font-size: 16px; font-weight: bold; }
+.king-role .k-role { font-size: 13px; color: var(--text-dim); }
+.king-role.spy { border: 2px solid rgba(231,76,60,0.4); background: rgba(231,76,60,0.1); }
+.king-role.spy .k-role { color: #e74c3c; font-weight: bold; }
+
+/* Countdown */
+.countdown-num {
+  font-size: 80px;
+  font-weight: bold;
+  color: var(--gold);
+  text-shadow: 0 0 30px rgba(255,215,0,0.5);
+  animation: countPulse 0.5s ease;
+  text-align: center;
+}
+@keyframes countPulse {
+  0% { transform: scale(2); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Group game result modal */
+.group-result-modal { text-align: center; }
+.group-result-modal .g-emoji { font-size: 60px; margin-bottom: 10px; }
+.group-result-modal .g-title { font-size: 14px; color: var(--text-dim); margin-bottom: 6px; }
+.group-result-modal .g-name { font-size: 36px; font-weight: bold; color: #ff6b6b; margin-bottom: 10px; text-shadow: 0 0 15px rgba(255,107,107,0.4); }
+.group-result-modal .g-what { font-size: 18px; color: var(--gold); padding: 10px 20px; background: rgba(255,215,0,0.1); border-radius: 12px; display: inline-block; margin-bottom: 16px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -421,6 +652,7 @@ textarea::placeholder, input::placeholder { color: #555; }
   <div class="header">
     <h1>🎰 随机抽取大师</h1>
     <div class="header-actions">
+      <div class="icon-btn" onclick="showPage('group')" title="社会主义群" id="groupBtn">☭</div>
       <div class="icon-btn" onclick="showPage('settings')" title="设置">⚙️</div>
       <div class="icon-btn" onclick="showPage('presets')" title="预设">📋</div>
       <div class="icon-btn" onclick="showPage('home')" title="首页">🏠</div>
@@ -429,10 +661,7 @@ textarea::placeholder, input::placeholder { color: #555; }
 
   <!-- HOME PAGE -->
   <div class="page active" id="page-home">
-    <!-- Tabs for quick presets -->
     <div class="tabs" id="presetTabs"></div>
-
-    <!-- Wheel -->
     <div class="wheel-section">
       <div class="wheel-wrap">
         <div class="wheel-pointer">▼</div>
@@ -440,33 +669,107 @@ textarea::placeholder, input::placeholder { color: #555; }
       </div>
       <button class="spin-btn" id="spinBtn" onclick="spin()">🎯 开始抽取</button>
     </div>
-
-    <!-- Result -->
     <div class="result-card" id="resultCard" style="display:none;">
       <div class="result-label">🎯 抽取结果</div>
       <div class="result-text" id="resultText"></div>
       <div class="result-sub" id="resultSub"></div>
     </div>
-
-    <!-- Input -->
     <div class="card">
-      <div class="card-title">
-        📝 候选名单
-        <span class="badge" id="itemCount">0项</span>
-      </div>
+      <div class="card-title">📝 候选名单 <span class="badge" id="itemCount">0项</span></div>
       <textarea id="itemInput" placeholder="每行一个选项&#10;例如：张三、李四、王五" oninput="onInputChange()"></textarea>
       <div class="chips" id="quickPresets"></div>
     </div>
-
-    <!-- History -->
     <div class="card">
-      <div class="card-title">
-        📜 历史记录
-        <span class="badge" id="historyCount">0条</span>
-      </div>
+      <div class="card-title">📜 历史记录 <span class="badge" id="historyCount">0条</span></div>
       <div id="historyList"></div>
       <div class="empty" id="historyEmpty">暂无记录</div>
     </div>
+  </div>
+
+  <!-- 社会主义群 PAGE -->
+  <div class="page" id="page-group">
+    <div class="group-banner">
+      <h2>☭ 社会主义群</h2>
+      <div class="members">徐源 · 李永宁 · 周玉韬 · 康博源 · 齐雪秀</div>
+    </div>
+
+    <div class="member-tags">
+      <span class="member-tag">😎 徐源</span>
+      <span class="member-tag">🤓 李永宁</span>
+      <span class="member-tag">😏 周玉韬</span>
+      <span class="member-tag">🧐 康博源</span>
+      <span class="member-tag">😄 齐雪秀</span>
+    </div>
+
+    <!-- 积分榜 -->
+    <div class="card">
+      <div class="card-title">🏆 积分榜 <span class="badge">实时排名</span></div>
+      <div class="score-board" id="scoreBoard"></div>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn btn-outline" style="font-size:12px;padding:6px 12px;" onclick="resetScores()">重置积分</button>
+      </div>
+    </div>
+
+    <!-- 游戏入口 -->
+    <div class="card">
+      <div class="card-title">🎮 群活动</div>
+
+      <div class="fun-grid">
+        <div class="fun-card" onclick="groupGame('punishment')">
+          <div class="emoji">🎲</div>
+          <div class="label">真心话大冒险</div>
+          <div class="desc">随机选人+惩罚</div>
+        </div>
+        <div class="fun-card" onclick="groupGame('treat')">
+          <div class="emoji">💰</div>
+          <div class="label">今天谁请客</div>
+          <div class="desc">天选买单人</div>
+        </div>
+        <div class="fun-card" onclick="groupGame('dice')">
+          <div class="emoji">🎯</div>
+          <div class="label">掷骰子比大小</div>
+          <div class="desc">全员骰子PK</div>
+        </div>
+        <div class="fun-card" onclick="groupGame('quiz')">
+          <div class="emoji">🧠</div>
+          <div class="label">知识抢答</div>
+          <div class="desc">随机出题抢答</div>
+        </div>
+        <div class="fun-card" onclick="groupGame('vote')">
+          <div class="emoji">📊</div>
+          <div class="label">匿名投票</div>
+          <div class="desc">群里那些事</div>
+        </div>
+        <div class="fun-card" onclick="groupGame('king')">
+          <div class="emoji">👑</div>
+          <div class="label">谁是卧底</div>
+          <div class="desc">随机分配角色</div>
+        </div>
+        <div class="fun-card" onclick="groupGame('drink')">
+          <div class="emoji">🍺</div>
+          <div class="label">喝酒轮盘</div>
+          <div class="desc">转到谁谁喝</div>
+        </div>
+        <div class="fun-card" onclick="groupGame('task')">
+          <div class="emoji">📋</div>
+          <div class="label">随机任务</div>
+          <div class="desc">活动分工抽签</div>
+        </div>
+        <div class="fun-card" onclick="groupGame('luck')">
+          <div class="emoji">🔮</div>
+          <div class="label">今日运势</div>
+          <div class="desc">看看谁最倒霉</div>
+        </div>
+        <div class="fun-card" onclick="groupGame('compliment')">
+          <div class="emoji">💝</div>
+          <div class="label">彩虹屁</div>
+          <div class="desc">随机夸夸</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 游戏结果区 -->
+    <div id="groupResultArea"></div>
   </div>
 
   <!-- PRESETS PAGE -->
@@ -479,7 +782,6 @@ textarea::placeholder, input::placeholder { color: #555; }
         <button class="btn btn-primary" onclick="showAddPreset()">➕ 新建预设</button>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title">📦 内置预设</div>
       <div id="builtInPresetsList"></div>
@@ -515,12 +817,10 @@ textarea::placeholder, input::placeholder { color: #555; }
         </div>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title">🎨 主题颜色</div>
       <div class="color-options" id="themeColors"></div>
     </div>
-
     <div class="card">
       <div class="card-title">💾 数据管理</div>
       <div class="btn-row">
@@ -532,12 +832,12 @@ textarea::placeholder, input::placeholder { color: #555; }
         <button class="btn btn-outline" style="border-color:rgba(231,76,60,0.3);color:#e74c3c;" onclick="resetAll()">⚠️ 重置全部</button>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title">ℹ️ 关于</div>
       <div style="font-size:13px;color:#888;line-height:1.8;">
-        随机抽取大师 v1.0<br>
-        支持转盘抽取、自定义预设、历史记录<br>
+        随机抽取大师 v3.0<br>
+        支持转盘抽取、自定义预设、群游戏<br>
+        社会主义群专属模块 🔥<br>
         数据保存在本地，隐私安全
       </div>
     </div>
@@ -550,6 +850,17 @@ textarea::placeholder, input::placeholder { color: #555; }
     <div class="emoji">🎉</div>
     <div class="big-result" id="modalResultText"></div>
     <button class="btn btn-gold" onclick="closeModal()" style="width:100%;">知道了</button>
+  </div>
+</div>
+
+<!-- Group Game Result Modal -->
+<div class="modal-bg" id="groupModal">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="groupModalTitle">游戏</span>
+      <div class="modal-close" onclick="closeGroupModal()">✕</div>
+    </div>
+    <div id="groupModalContent"></div>
   </div>
 </div>
 
@@ -588,7 +899,11 @@ textarea::placeholder, input::placeholder { color: #555; }
 
 <script>
 // ========== DATA ==========
+const GROUP_MEMBERS = ['徐源', '李永宁', '周玉韬', '康博源', '齐雪秀'];
+const GROUP_EMOJIS = {'徐源':'😎','李永宁':'🤓','周玉韬':'😏','康博源':'🧐','齐雪秀':'😄'};
+
 const BUILT_IN_PRESETS = {
+  group: { name: '☭ 社会主义群', items: GROUP_MEMBERS },
   team: { name: '👥 团队分工', items: ['张三','李四','王五','赵六','钱七','孙八','周九','吴十'] },
   food: { name: '🍜 今天吃啥', items: ['火锅','烧烤','麻辣烫','寿司','炸鸡','奶茶','螺蛳粉','黄焖鸡','拉面','饺子','汉堡','披萨','烤鱼','冒菜'] },
   truth: { name: '🎲 真心话大冒险', items: ['真心话','大冒险','喝一杯','学猫叫','唱首歌','讲笑话','做俯卧撑','原地转圈','模仿秀','跳个舞'] },
@@ -610,23 +925,94 @@ const THEMES = [
   { name: '金色', primary: '#ffd700', dark: '#f39c12' }
 ];
 
+// 题库
+const TRUTH_QUESTIONS = [
+  '你最近一次偷偷哭是因为什么？','你手机里最不想让别人看到的是什么？','你对群里谁的第一印象最差？',
+  '你做过最丢人的事是什么？','你暗恋过几个人？','你撒过最大的谎是什么？',
+  '你最想删掉的一段记忆是什么？','你偷偷关注过谁的社交媒体？','你对谁说过违心的话？',
+  '你最怕被谁知道你的秘密？','你做过最后悔的决定是什么？','你半夜偷偷吃过什么？',
+  '你最不想让父母知道的事？','你在群里最想吐槽谁？','你觉得自己最大的缺点是什么？',
+  '你最后一次说谎是什么时候？','你最尴尬的一次经历？','你有没有偷偷喜欢群里某个人？'
+];
+
+const DARE_QUESTIONS = [
+  '给你的暗恋对象发一条"我想你了"','模仿群里一个人说话方式1分钟','发一条朋友圈：我单身求撩',
+  '给最近聊天的人打电话说"我爱你"','学猫叫10声','做20个俯卧撑','唱一首歌的高潮部分',
+  '原地转10圈然后走直线','让右边的人给你画个妆','发语音说"我是猪"发到群里',
+  '模仿一个明星的动作','闭眼让别人在你脸上画画','吃一口辣椒/芥末',
+  '用屁股写自己的名字','给前任发一条"你还好吗"','用方言唱一首歌',
+  '打电话给爸妈说"我想你们了"','发朋友圈夸群里一个人','做10个深蹲跳',
+  '对着镜头比心说"我爱你们"'
+];
+
+const QUIZ_QUESTIONS = [
+  {q:'地球到月球的距离约是多少？',a:'38万公里',opts:['38万公里','100万公里','10万公里','1000万公里']},
+  {q:'世界上最大的海洋是？',a:'太平洋',opts:['太平洋','大西洋','印度洋','北冰洋']},
+  {q:'人体最大的器官是？',a:'皮肤',opts:['皮肤','肝脏','大脑','心脏']},
+  {q:'光速约是多少？',a:'30万公里/秒',opts:['30万公里/秒','30万米/秒','30亿米/秒','3000公里/秒']},
+  {q:'中国的国宝是什么？',a:'大熊猫',opts:['大熊猫','金丝猴','白鳍豚','东北虎']},
+  {q:'世界上最长的河流是？',a:'尼罗河',opts:['尼罗河','亚马逊河','长江','黄河']},
+  {q:'人体有几块骨头？',a:'206块',opts:['206块','108块','312块','180块']},
+  {q:'太阳系最大的行星是？',a:'木星',opts:['木星','土星','天王星','海王星']},
+  {q:'水的化学式是？',a:'H₂O',opts:['H₂O','CO₂','NaCl','O₂']},
+  {q:'地球上最高的山峰是？',a:'珠穆朗玛峰',opts:['珠穆朗玛峰','K2','干城章嘉峰','洛子峰']},
+  {q:'世界上人口最多的国家是？',a:'中国',opts:['中国','印度','美国','印尼']},
+  {q:'DNA的全称是？',a:'脱氧核糖核酸',opts:['脱氧核糖核酸','核糖核酸','氨基酸','蛋白质']},
+  {q:'一光年约是多少公里？',a:'9.46万亿公里',opts:['9.46万亿公里','9.46亿公里','9460万公里','94.6万亿公里']},
+  {q:'地球上70%是什么？',a:'水',opts:['水','陆地','森林','沙漠']},
+  {q:'中国有多少个省级行政区？',a:'34个',opts:['34个','32个','36个','30个']}
+];
+
+const VOTE_TOPICS = [
+  {topic:'群里谁最可能单身一辈子？',opts:GROUP_MEMBERS},
+  {topic:'谁最可能成为亿万富翁？',opts:GROUP_MEMBERS},
+  {topic:'今天中午吃什么？',opts:['火锅','烧烤','麻辣烫','随便']},
+  {topic:'下次聚会去哪？',opts:['KTV','密室逃脱','剧本杀','吃饭']},
+  {topic:'谁最可能出家？',opts:GROUP_MEMBERS},
+  {topic:'谁是群里的开心果？',opts:GROUP_MEMBERS},
+  {topic:'谁最可能当老板？',opts:GROUP_MEMBERS},
+  {topic:'谁最靠谱？',opts:GROUP_MEMBERS},
+  {topic:'谁最可能猝死在工位上？',opts:GROUP_MEMBERS},
+  {topic:'谁最可能一夜暴富？',opts:GROUP_MEMBERS}
+];
+
+const LUCK_FORTUNES = [
+  {level:'大吉',emoji:'🌟',desc:'今天万事如意，买彩票可能中奖！',score:3},
+  {level:'中吉',emoji:'✨',desc:'运气不错，适合表白/搞事',score:2},
+  {level:'小吉',emoji:'🍀',desc:'小幸运在线，捡到钱不奇怪',score:1},
+  {level:'平',emoji:'😐',desc:'平淡是真，稳稳的幸福',score:0},
+  {level:'小凶',emoji:'😰',desc:'小心水逆，出门记得带伞',score:-1},
+  {level:'凶',emoji:'💀',desc:'今天建议躺平，别出门了',score:-2},
+  {level:'大凶',emoji:'☠️',desc:'建议今天请假在家，远离人群',score:-3},
+  {level:'超吉',emoji:'🌈',desc:'天选之子！做什么都会成功！',score:5}
+];
+
+const COMPLIMENTS = [
+  '你今天也太好看了吧！','你的笑容能治愈一切！','和你在一起就是开心！',
+  '你简直是人间宝藏！','你做什么都这么优秀！','你是我见过最有趣的人！',
+  '你的品味真的绝了！','你就是行走的荷尔蒙！','有你在的群都不会冷场！',
+  '你简直是全能型人才！','你的眼光永远那么独到！','你的存在就是一种美好！',
+  '你说话总是那么有道理！','你就是我们的精神支柱！','你笑起来真好看！'
+];
+
+const DICE_FACES = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+
 let state = {
   items: [],
   customPresets: {},
   history: [],
   drawnItems: new Set(),
-  settings: {
-    pickCount: 1,
-    noRepeat: true,
-    sound: true,
-    effect: true,
-    theme: 0
-  }
+  scores: {},
+  settings: { pickCount: 1, noRepeat: true, sound: true, effect: true, theme: 0 }
 };
 
 let currentAngle = 0;
 let isSpinning = false;
 let activePresetKey = null;
+let quizAnswered = false;
+
+// Init scores
+GROUP_MEMBERS.forEach(m => { if (!state.scores[m]) state.scores[m] = 0; });
 
 // Audio
 let audioCtx;
@@ -636,29 +1022,33 @@ function getAudioCtx() {
 }
 function playTick() {
   if (!state.settings.sound) return;
-  const ctx = getAudioCtx();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain); gain.connect(ctx.destination);
-  osc.frequency.value = 600 + Math.random() * 600;
-  gain.gain.value = 0.04;
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-  osc.start(); osc.stop(ctx.currentTime + 0.05);
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 600 + Math.random() * 600;
+    gain.gain.value = 0.04;
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    osc.start(); osc.stop(ctx.currentTime + 0.05);
+  } catch(e) {}
 }
 function playWin() {
   if (!state.settings.sound) return;
-  const ctx = getAudioCtx();
-  [523, 659, 784, 1047].forEach((f, i) => {
-    setTimeout(() => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.frequency.value = f;
-      gain.gain.value = 0.06;
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-      osc.start(); osc.stop(ctx.currentTime + 0.3);
-    }, i * 100);
-  });
+  try {
+    const ctx = getAudioCtx();
+    [523, 659, 784, 1047].forEach((f, i) => {
+      setTimeout(() => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.frequency.value = f;
+        gain.gain.value = 0.06;
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+        osc.start(); osc.stop(ctx.currentTime + 0.3);
+      }, i * 100);
+    });
+  } catch(e) {}
 }
 
 // ========== STORAGE ==========
@@ -670,6 +1060,7 @@ function loadState() {
       state = { ...state, ...parsed, drawnItems: new Set(parsed.drawnItems || []) };
     }
   } catch(e) {}
+  GROUP_MEMBERS.forEach(m => { if (!state.scores[m]) state.scores[m] = 0; });
 }
 function saveState() {
   try {
@@ -686,7 +1077,6 @@ const COLORS = ['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98
 function drawWheel(angle = 0) {
   const cx = 300, cy = 300, r = 270;
   ctx.clearRect(0, 0, 600, 600);
-
   if (state.items.length === 0) {
     ctx.fillStyle = 'rgba(255,255,255,0.06)';
     ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fill();
@@ -695,19 +1085,13 @@ function drawWheel(angle = 0) {
     ctx.fillText('请先输入候选名单', cx, cy);
     return;
   }
-
   const slice = (Math.PI * 2) / state.items.length;
-
   state.items.forEach((item, i) => {
     const sa = angle + i * slice;
     const ea = sa + slice;
-
-    // Slice fill
     ctx.fillStyle = COLORS[i % COLORS.length];
     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, sa, ea); ctx.closePath(); ctx.fill();
     ctx.strokeStyle = 'rgba(0,0,0,0.15)'; ctx.lineWidth = 2; ctx.stroke();
-
-    // Text
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(sa + slice / 2);
@@ -718,8 +1102,6 @@ function drawWheel(angle = 0) {
     ctx.fillText(txt, r * 0.58, 0);
     ctx.restore();
   });
-
-  // Center
   ctx.fillStyle = '#1a1a2e';
   ctx.beginPath(); ctx.arc(cx, cy, 30, 0, Math.PI*2); ctx.fill();
   ctx.strokeStyle = 'rgba(0,200,255,0.4)'; ctx.lineWidth = 3; ctx.stroke();
@@ -728,17 +1110,15 @@ function drawWheel(angle = 0) {
   ctx.fillText('GO', cx, cy);
 }
 
-// ========== CORE LOGIC ==========
+// ========== CORE SPIN ==========
 function spin() {
   if (isSpinning || state.items.length < 2) {
     if (state.items.length < 2) alert('请至少输入2个选项！');
     return;
   }
-
   isSpinning = true;
   document.getElementById('spinBtn').disabled = true;
 
-  // Filter available
   let available = [...state.items];
   if (state.settings.noRepeat && state.drawnItems.size > 0) {
     available = available.filter(x => !state.drawnItems.has(x));
@@ -748,7 +1128,6 @@ function spin() {
     }
   }
 
-  // Pick winners
   const winners = [];
   const pool = [...available];
   for (let i = 0; i < Math.min(state.settings.pickCount, pool.length); i++) {
@@ -757,7 +1136,6 @@ function spin() {
     pool.splice(idx, 1);
   }
 
-  // Calculate target angle
   const wIdx = state.items.indexOf(winners[0]);
   const slice = (Math.PI * 2) / state.items.length;
   const target = -(wIdx * slice + slice / 2) + Math.PI / 2;
@@ -773,13 +1151,10 @@ function spin() {
     const progress = Math.min(elapsed / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 4);
     currentAngle = startAngle + total * eased;
-
     const norm = ((currentAngle % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
     const tickIdx = Math.floor(norm / slice);
     if (tickIdx !== lastTick) { playTick(); lastTick = tickIdx; }
-
     drawWheel(currentAngle);
-
     if (progress < 1) {
       requestAnimationFrame(animate);
     } else {
@@ -799,19 +1174,14 @@ function onWin(winners) {
     state.history.unshift({ name: w, time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit'}) });
   });
   saveState();
-
-  // Show result
   document.getElementById('resultCard').style.display = 'block';
   document.getElementById('resultText').textContent = winners.join('、');
   document.getElementById('resultSub').textContent = `共 ${winners.length} 人 · 累计 ${state.history.length} 次`;
-
-  // Modal
   if (state.settings.effect) {
     document.getElementById('modalResultText').textContent = winners.join('、');
     document.getElementById('resultModal').classList.add('show');
     createConfetti();
   }
-
   renderHistory();
 }
 
@@ -831,10 +1201,279 @@ function createConfetti() {
   }
 }
 
-// ========== UI ==========
+// ========== 社会主义群 GAMES ==========
+function addScore(name, pts) {
+  state.scores[name] = (state.scores[name] || 0) + pts;
+  saveState();
+  renderScoreBoard();
+}
+
+function resetScores() {
+  if (!confirm('确定重置积分？')) return;
+  GROUP_MEMBERS.forEach(m => state.scores[m] = 0);
+  saveState();
+  renderScoreBoard();
+}
+
+function renderScoreBoard() {
+  const sorted = GROUP_MEMBERS.map(m => ({name:m, score:state.scores[m]||0})).sort((a,b) => b.score - a.score);
+  const el = document.getElementById('scoreBoard');
+  el.innerHTML = sorted.map((m,i) => `
+    <div class="score-item">
+      <div class="s-emoji">${GROUP_EMOJIS[m.name]}</div>
+      <div class="s-name">${m.name}</div>
+      <div class="s-score${i===0?' first':''}">${m.score}</div>
+    </div>
+  `).join('');
+}
+
+function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function groupGame(type) {
+  switch(type) {
+    case 'punishment': gamePunishment(); break;
+    case 'treat': gameTreat(); break;
+    case 'dice': gameDice(); break;
+    case 'quiz': gameQuiz(); break;
+    case 'vote': gameVote(); break;
+    case 'king': gameKing(); break;
+    case 'drink': gameDrink(); break;
+    case 'task': gameTask(); break;
+    case 'luck': gameLuck(); break;
+    case 'compliment': gameCompliment(); break;
+  }
+}
+
+// 1. 真心话大冒险
+function gamePunishment() {
+  const person = rand(GROUP_MEMBERS);
+  const isTruth = Math.random() > 0.5;
+  const question = isTruth ? rand(TRUTH_QUESTIONS) : rand(DARE_QUESTIONS);
+  const title = isTruth ? '💭 真心话' : '🔥 大冒险';
+  showGroupResult(title, GROUP_EMOJIS[person], person, question, '答对加1分，不答扣1分');
+  addScore(person, 1);
+}
+
+// 2. 今天谁请客
+function gameTreat() {
+  const person = rand(GROUP_MEMBERS);
+  showGroupResult('💰 今天谁请客', '💸', person, '恭喜你成为天选买单人！', '请客光荣！扣2分安慰一下');
+  addScore(person, -2);
+}
+
+// 3. 掷骰子比大小
+function gameDice() {
+  let html = '<div style="text-align:center;margin-bottom:16px;"><div style="font-size:16px;font-weight:bold;margin-bottom:12px;">🎲 全员掷骰子</div>';
+  const results = GROUP_MEMBERS.map(m => {
+    const dice = Math.floor(Math.random() * 6) + 1;
+    return { name: m, dice, face: DICE_FACES[dice-1] };
+  });
+  const maxDice = Math.max(...results.map(r => r.dice));
+  const winners = results.filter(r => r.dice === maxDice);
+
+  html += '<div class="dice-area">';
+  results.forEach(r => {
+    const isWin = r.dice === maxDice;
+    html += `<div class="dice-player">
+      <div class="d-name">${GROUP_EMOJIS[r.name]} ${r.name}</div>
+      <div class="d-dice">${r.face}</div>
+      <div class="d-score">${r.dice}点${isWin ? ' 👑' : ''}</div>
+    </div>`;
+  });
+  html += '</div>';
+
+  if (winners.length === 1) {
+    html += `<div class="fun-result"><div class="who">🏆 冠军</div><div class="name">${GROUP_EMOJIS[winners[0].name]} ${winners[0].name}</div><div class="what">${maxDice}点！+3分</div></div>`;
+    addScore(winners[0].name, 3);
+  } else {
+    html += `<div class="fun-result"><div class="who">🏆 平局</div><div class="name">${winners.map(w=>GROUP_EMOJIS[w.name]+w.name).join(' ')}</div><div class="what">${maxDice}点！各+2分</div></div>`;
+    winners.forEach(w => addScore(w.name, 2));
+  }
+
+  showGroupModal('🎲 掷骰子比大小', html);
+}
+
+// 4. 知识抢答
+function gameQuiz() {
+  quizAnswered = false;
+  const q = rand(QUIZ_QUESTIONS);
+  let html = `<div class="quiz-question">${q.q}</div>`;
+  html += '<div class="quiz-options">';
+  q.opts.forEach(opt => {
+    html += `<div class="quiz-opt" onclick="quizPick(this,'${opt}','${q.a}',this)">${opt}</div>`;
+  });
+  html += '</div>';
+  html += '<div id="quizResult" style="margin-top:12px;text-align:center;"></div>';
+
+  // Random buzzer
+  const buzzer = rand(GROUP_MEMBERS);
+  html += `<div style="margin-top:16px;padding:12px;background:rgba(255,215,0,0.1);border-radius:10px;text-align:center;">
+    <div style="font-size:12px;color:#888;">🔔 ${GROUP_EMOJIS[buzzer]} ${buzzer} 最先抢答！</div>
+  </div>`;
+
+  showGroupModal('🧠 知识抢答', html);
+}
+
+function quizPick(el, chosen, correct) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  document.querySelectorAll('.quiz-opt').forEach(o => {
+    if (o.textContent === correct) o.classList.add('correct');
+    if (o.textContent === chosen && chosen !== correct) o.classList.add('wrong');
+  });
+  const buzzer = rand(GROUP_MEMBERS);
+  const res = document.getElementById('quizResult');
+  if (chosen === correct) {
+    res.innerHTML = `<div style="color:#2ecc71;font-size:16px;font-weight:bold;">✅ 回答正确！${GROUP_EMOJIS[buzzer]} ${buzzer} +2分</div>`;
+    addScore(buzzer, 2);
+  } else {
+    res.innerHTML = `<div style="color:#e74c3c;font-size:16px;font-weight:bold;">❌ 答错了！正确答案：${correct}</div>`;
+  }
+}
+
+// 5. 匿名投票
+function gameVote() {
+  const topic = rand(VOTE_TOPICS);
+  const votes = {};
+  topic.opts.forEach(o => votes[o] = 0);
+  // Simulate random votes
+  GROUP_MEMBERS.forEach(() => {
+    const pick = rand(topic.opts);
+    votes[pick]++;
+  });
+
+  const maxVotes = Math.max(...Object.values(votes));
+  let html = `<div style="text-align:center;font-size:16px;font-weight:bold;margin-bottom:16px;">${topic.topic}</div>`;
+  topic.opts.forEach(opt => {
+    const pct = Math.round((votes[opt] / GROUP_MEMBERS.length) * 100);
+    const isMax = votes[opt] === maxVotes;
+    const color = isMax ? '#ff6b6b' : '#4ecdc4';
+    html += `<div class="vote-bar-wrap">
+      <div class="vote-label"><span>${opt}</span><span>${votes[opt]}票</span></div>
+      <div class="vote-bar"><div class="vote-fill" style="width:${pct}%;background:${color};">${pct}%</div></div>
+    </div>`;
+  });
+  html += `<div style="text-align:center;margin-top:12px;font-size:12px;color:#888;">投票结果仅供参考 😄</div>`;
+
+  showGroupModal('📊 匿名投票', html);
+}
+
+// 6. 谁是卧底
+function gameKing() {
+  const members = [...GROUP_MEMBERS].sort(() => Math.random() - 0.5);
+  const spyIdx = Math.floor(Math.random() * members.length);
+  const civilianWord = rand(['火锅','奶茶','螺蛳粉','烧烤','炸鸡','寿司','麻辣烫','饺子']);
+  const spyWord = rand(['火锅','奶茶','螺蛳粉','烧烤','炸鸡','寿司','麻辣烫','饺子'].filter(w => w !== civilianWord));
+
+  let html = '<div style="text-align:center;margin-bottom:16px;"><div style="font-size:14px;color:#888;">身份已分配（点击翻牌）</div></div>';
+  members.forEach((m, i) => {
+    const isSpy = i === spyIdx;
+    html += `<div class="king-role${isSpy ? ' spy' : ''}" onclick="this.querySelector('.k-role').style.display=this.querySelector('.k-role').style.display==='none'?'block':'none'" style="cursor:pointer;">
+      <span style="font-size:20px;">${GROUP_EMOJIS[m]}</span>
+      <span class="k-name">${m}</span>
+      <span class="k-role" style="display:none;">${isSpy ? '🕵️ 卧底（词：'+spyWord+'）' : '👤 平民（词：'+civilianWord+'）'}</span>
+    </div>`;
+  });
+  html += `<div style="text-align:center;margin-top:12px;font-size:12px;color:#888;">卧底和平民的词相似但不同，找出卧底！</div>`;
+
+  showGroupModal('👑 谁是卧底', html);
+}
+
+// 7. 喝酒轮盘
+function gameDrink() {
+  const person = rand(GROUP_MEMBERS);
+  const action = rand([
+    '喝一杯！','喝半杯！','干了这杯！','连喝三口！','以茶代酒也行',
+    '找人代喝！','加满再喝！','先干为敬！'
+  ]);
+  showGroupResult('🍺 喝酒轮盘', '🍻', person, action, '不喝酒的可以用果汁代替哦~');
+  addScore(person, -1);
+}
+
+// 8. 随机任务
+function gameTask() {
+  const tasks = [
+    '负责拍照记录','负责点菜','负责买单（然后AA）','负责叫车','负责活跃气氛',
+    '负责倒水','负责结账对账','负责找餐厅','负责订位','负责带零食',
+    '负责唱歌开场','负责讲个笑话','负责给大家倒饮料','负责发朋友圈宣传'
+  ];
+  const assignments = [];
+  const shuffled = [...GROUP_MEMBERS].sort(() => Math.random() - 0.5);
+  shuffled.forEach((m, i) => {
+    assignments.push({ name: m, task: tasks[i % tasks.length] });
+  });
+
+  let html = '<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">📋 今日任务分配</div>';
+  assignments.forEach(a => {
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,0.2);border-radius:10px;margin-bottom:6px;">
+      <span style="font-size:20px;">${GROUP_EMOJIS[a.name]}</span>
+      <span style="font-weight:bold;min-width:50px;">${a.name}</span>
+      <span style="color:var(--gold);flex:1;">${a.task}</span>
+    </div>`;
+  });
+
+  showGroupModal('📋 随机任务分配', html);
+}
+
+// 9. 今日运势
+function gameLuck() {
+  let html = '<div style="text-align:center;margin-bottom:16px;font-size:14px;color:#888;">🔮 社会主义群今日运势</div>';
+  const results = GROUP_MEMBERS.map(m => {
+    const fortune = rand(LUCK_FORTUNES);
+    return { name: m, ...fortune };
+  });
+  results.forEach(r => {
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(0,0,0,0.2);border-radius:10px;margin-bottom:6px;">
+      <span style="font-size:24px;">${r.emoji}</span>
+      <span style="font-weight:bold;min-width:50px;">${GROUP_EMOJIS[r.name]} ${r.name}</span>
+      <span style="color:${r.score>=0?'var(--gold)':'#e74c3c'};flex:1;">${r.level} - ${r.desc}</span>
+    </div>`;
+    addScore(r.name, r.score);
+  });
+
+  showGroupModal('🔮 今日运势', html);
+}
+
+// 10. 彩虹屁
+function gameCompliment() {
+  const person = rand(GROUP_MEMBERS);
+  const compliment = rand(COMPLIMENTS);
+  showGroupResult('💝 彩虹屁时间', GROUP_EMOJIS[person], person, compliment, '夸人也是一种美德 ✨');
+  addScore(person, 1);
+}
+
+// Group modal helpers
+function showGroupResult(title, emoji, name, what, sub) {
+  const html = `
+    <div style="text-align:center;">
+      <div style="font-size:60px;margin-bottom:10px;">${emoji}</div>
+      <div style="font-size:14px;color:#888;margin-bottom:4px;">${title}</div>
+      <div style="font-size:32px;font-weight:bold;color:#ff6b6b;margin-bottom:12px;text-shadow:0 0 15px rgba(255,107,107,0.4);">${GROUP_EMOJIS[name]} ${name}</div>
+      <div style="font-size:18px;color:var(--gold);padding:12px 20px;background:rgba(255,215,0,0.1);border-radius:12px;display:inline-block;margin-bottom:12px;">${what}</div>
+      <div style="font-size:12px;color:#888;margin-top:8px;">${sub||''}</div>
+    </div>
+  `;
+  showGroupModal(title, html);
+  if (state.settings.effect) createConfetti();
+}
+
+function showGroupModal(title, content) {
+  document.getElementById('groupModalTitle').textContent = title;
+  document.getElementById('groupModalContent').innerHTML = content;
+  document.getElementById('groupModal').classList.add('show');
+}
+
+function closeGroupModal() {
+  document.getElementById('groupModal').classList.remove('show');
+}
+
+// ========== UI HELPERS ==========
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('active'));
+  if (name === 'group') document.getElementById('groupBtn').classList.add('active');
+  if (name === 'group') renderScoreBoard();
 }
 
 function onInputChange() {
@@ -857,12 +1496,12 @@ function saveSettings() {
 
 function loadSettingsUI() {
   document.getElementById('pickCount').value = state.settings.pickCount;
-  if (state.settings.noRepeat) document.getElementById('toggleNoRepeat').classList.add('on');
-  else document.getElementById('toggleNoRepeat').classList.remove('on');
-  if (state.settings.sound) document.getElementById('toggleSound').classList.add('on');
-  else document.getElementById('toggleSound').classList.remove('on');
-  if (state.settings.effect) document.getElementById('toggleEffect').classList.add('on');
-  else document.getElementById('toggleEffect').classList.remove('on');
+  ['toggleNoRepeat','toggleSound','toggleEffect'].forEach(id => {
+    const el = document.getElementById(id);
+    const key = id.replace('toggle','').toLowerCase();
+    const map = {norepeat:'noRepeat',sound:'sound',effect:'effect'};
+    if (state.settings[map[key]]) el.classList.add('on'); else el.classList.remove('on');
+  });
 }
 
 // ========== PRESETS ==========
@@ -880,6 +1519,7 @@ function renderPresetTabs() {
 
 function loadPreset(key) {
   activePresetKey = key;
+  if (key === 'group') { showPage('group'); renderPresetTabs(); return; }
   const preset = BUILT_IN_PRESETS[key];
   document.getElementById('itemInput').value = preset.items.join('\n');
   state.items = [...preset.items];
@@ -908,7 +1548,7 @@ function loadCustomPreset(key) {
 
 function renderQuickPresets() {
   const el = document.getElementById('quickPresets');
-  el.innerHTML = Object.entries(BUILT_IN_PRESETS).slice(0, 6).map(([k, v]) =>
+  el.innerHTML = Object.entries(BUILT_IN_PRESETS).filter(([k])=>k!=='group').slice(0, 6).map(([k, v]) =>
     `<div class="chip" onclick="loadPreset('${k}')">${v.name}</div>`
   ).join('');
 }
@@ -1001,7 +1641,7 @@ function clearHistory() {
 }
 
 function resetAll() {
-  if (!confirm('确定重置全部数据？这将清除所有预设和历史记录！')) return;
+  if (!confirm('确定重置全部数据？')) return;
   localStorage.removeItem('randomPickerState');
   location.reload();
 }
@@ -1015,9 +1655,7 @@ function exportData() {
   URL.revokeObjectURL(url);
 }
 
-function importData() {
-  document.getElementById('importModal').classList.add('show');
-}
+function importData() { document.getElementById('importModal').classList.add('show'); }
 function handleFile(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -1026,10 +1664,8 @@ function handleFile(e) {
     try {
       const parsed = JSON.parse(ev.target.result);
       state = { ...state, ...parsed, drawnItems: new Set(parsed.drawnItems || []) };
-      saveState();
-      initUI();
-      alert('导入成功！');
-    } catch(e) { alert('导入失败：数据格式错误'); }
+      saveState(); initUI(); alert('导入成功！');
+    } catch(e) { alert('导入失败'); }
   };
   reader.readAsText(file);
 }
@@ -1038,8 +1674,7 @@ function doImport() {
     const text = document.getElementById('importDataInput').value.trim();
     const parsed = JSON.parse(text);
     state = { ...state, ...parsed, drawnItems: new Set(parsed.drawnItems || []) };
-    saveState();
-    initUI();
+    saveState(); initUI();
     document.getElementById('importModal').classList.remove('show');
     alert('导入成功！');
   } catch(e) { alert('导入失败：JSON格式错误'); }
@@ -1056,6 +1691,7 @@ function initUI() {
   renderCustomPresets();
   renderHistory();
   renderThemeColors();
+  renderScoreBoard();
   if (state.settings.theme > 0) setTheme(state.settings.theme);
   drawWheel(currentAngle);
 }

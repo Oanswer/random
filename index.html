@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1a1a2e">
 <link rel="manifest" href="manifest.json">
-<title>🎰 随机抽取大师</title>
+<title>🎰 随机抽取大师 - 联机版</title>
 <style>
 :root{--primary:#00d4ff;--primary-dark:#0072ff;--gold:#ffd700;--bg:#1a1a2e;--card:rgba(255,255,255,0.08);--card-border:rgba(255,255,255,0.1);--text:#fff;--text-dim:#aaa;--red:#ff6b6b;--green:#2ecc71;--purple:#a29bfe}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -69,6 +69,7 @@ textarea::placeholder,input::placeholder{color:#555}
 .btn-outline{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--text-dim)}
 .btn-outline:hover{border-color:var(--primary);color:var(--primary)}
 .btn-gold{background:linear-gradient(135deg,var(--gold),#f39c12);color:#000}
+.btn-red{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff}
 .btn-row{display:flex;gap:10px;margin-top:12px}
 .modal-bg{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:100;justify-content:center;align-items:center;backdrop-filter:blur(5px);padding:20px}
 .modal-bg.show{display:flex}
@@ -86,7 +87,58 @@ textarea::placeholder,input::placeholder{color:#555}
 .color-dot{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s}
 .color-dot:hover,.color-dot.active{border-color:#fff;transform:scale(1.15)}
 
-/* ===== GROUP PAGE ===== */
+/* ===== ONLINE ===== */
+.online-banner{background:linear-gradient(135deg,#6c5ce7,#a29bfe,#74b9ff);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+.online-banner h2{font-size:22px;margin-bottom:4px}
+.online-banner .sub{font-size:13px;color:rgba(255,255,255,.7)}
+
+.room-section{text-align:center;margin-bottom:16px}
+.room-code{font-size:48px;font-weight:bold;color:var(--gold);letter-spacing:8px;text-shadow:0 0 20px rgba(255,215,0,.4);margin:12px 0;font-family:monospace}
+.room-code-label{font-size:12px;color:#888}
+
+.lobby-members{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+.lobby-member{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);color:#2ecc71;font-size:14px;font-weight:bold;animation:memberIn .3s ease}
+.lobby-member.me{background:rgba(0,200,255,.15);border-color:rgba(0,200,255,.3);color:var(--primary)}
+@keyframes memberIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+
+.lobby-member .kick{width:18px;height:18px;border-radius:50%;background:rgba(231,76,60,.3);border:none;color:#e74c3c;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:4px}
+.lobby-member .kick:hover{background:rgba(231,76,60,.5)}
+
+.game-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.game-item{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:all .2s}
+.game-item:hover{transform:translateY(-2px);border-color:rgba(255,215,0,.3);box-shadow:0 5px 20px rgba(0,0,0,.2)}
+.game-item:active{transform:scale(.96)}
+.game-item .emoji{font-size:32px;margin-bottom:6px}
+.game-item .label{font-size:13px;font-weight:bold}
+.game-item .desc{font-size:10px;color:#666;margin-top:3px}
+
+/* Online game area */
+.online-status{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(46,204,113,.1);border:1px solid rgba(46,204,113,.2);border-radius:10px;margin-bottom:12px;font-size:13px}
+.online-dot{width:8px;height:8px;border-radius:50%;background:#2ecc71;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.player-turn{background:rgba(255,215,0,.15);border:2px solid rgba(255,215,0,.3);border-radius:12px;padding:12px;text-align:center;margin-bottom:12px}
+.player-turn .turn-label{font-size:12px;color:#888}
+.player-turn .turn-name{font-size:20px;font-weight:bold;color:var(--gold)}
+
+.my-action{text-align:center;margin:16px 0}
+.my-action .action-label{font-size:14px;color:var(--text-dim);margin-bottom:8px}
+
+.online-result{background:linear-gradient(135deg,rgba(255,107,107,.1),rgba(255,215,0,.1));border:2px solid rgba(255,215,0,.2);border-radius:16px;padding:20px;text-align:center;margin-bottom:12px;animation:popIn .3s ease}
+.online-result .who{font-size:14px;color:var(--text-dim);margin-bottom:4px}
+.online-result .name{font-size:30px;font-weight:bold;color:#ff6b6b;text-shadow:0 0 15px rgba(255,107,107,.4)}
+.online-result .what{font-size:16px;color:var(--gold);margin-top:8px;padding:8px 16px;background:rgba(255,215,0,.1);border-radius:10px;display:inline-block}
+
+/* Chat */
+.chat-box{max-height:200px;overflow-y:auto;margin-bottom:8px;padding:8px;background:rgba(0,0,0,.2);border-radius:10px}
+.chat-msg{margin:4px 0;font-size:13px;line-height:1.5}
+.chat-msg .chat-name{font-weight:bold;color:var(--primary)}
+.chat-msg .chat-text{color:var(--text-dim)}
+.chat-msg.system{color:#888;font-style:italic;text-align:center;font-size:12px}
+.chat-input-wrap{display:flex;gap:8px}
+.chat-input-wrap input{flex:1}
+
+/* Group page */
 .group-banner{background:linear-gradient(135deg,#ff6b6b,#ee5a24,#ffd700);border-radius:16px;padding:20px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
 .group-banner::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.15) 0%,transparent 60%);animation:shimmer 3s infinite}
 @keyframes shimmer{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
@@ -103,7 +155,6 @@ textarea::placeholder,input::placeholder{color:#555}
 .fun-result .who{font-size:14px;color:var(--text-dim);margin-bottom:4px}
 .fun-result .name{font-size:30px;font-weight:bold;color:#ff6b6b;text-shadow:0 0 15px rgba(255,107,107,.4)}
 .fun-result .what{font-size:16px;color:var(--gold);margin-top:8px;padding:8px 16px;background:rgba(255,215,0,.1);border-radius:10px;display:inline-block}
-.fun-result .sub{font-size:12px;color:#888;margin-top:8px}
 .member-tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 16px}
 .member-tag{padding:6px 14px;border-radius:20px;background:rgba(255,107,107,.15);border:1px solid rgba(255,107,107,.2);color:#ff6b6b;font-size:13px;font-weight:bold}
 .score-board{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
@@ -118,12 +169,15 @@ textarea::placeholder,input::placeholder{color:#555}
 .dice-player .d-dice{font-size:50px;animation:diceRoll .5s ease}
 .dice-player .d-score{font-size:14px;color:var(--gold);font-weight:bold;margin-top:4px}
 @keyframes diceRoll{0%{transform:rotate(0deg) scale(.5);opacity:0}50%{transform:rotate(180deg) scale(1.3)}100%{transform:rotate(360deg) scale(1);opacity:1}}
+.section-label{font-size:12px;color:#666;margin:8px 0 6px;padding-left:4px;display:flex;align-items:center;gap:4px}
+.section-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.06)}
 .quiz-question{font-size:18px;font-weight:bold;margin-bottom:16px;line-height:1.5;text-align:center}
 .quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .quiz-opt{padding:12px;border-radius:10px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:14px;cursor:pointer;text-align:center;transition:all .2s}
 .quiz-opt:hover{border-color:var(--primary);background:rgba(0,200,255,.1)}
 .quiz-opt.correct{border-color:#2ecc71;background:rgba(46,204,113,.2);color:#2ecc71}
 .quiz-opt.wrong{border-color:#e74c3c;background:rgba(231,76,60,.2);color:#e74c3c}
+.quiz-opt.selected{border-color:var(--primary);background:rgba(0,200,255,.15)}
 .vote-bar-wrap{margin:8px 0}
 .vote-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
 .vote-bar{height:24px;background:rgba(0,0,0,.3);border-radius:12px;overflow:hidden}
@@ -133,70 +187,32 @@ textarea::placeholder,input::placeholder{color:#555}
 .king-role .k-role{font-size:13px;color:var(--text-dim)}
 .king-role.spy{border:2px solid rgba(231,76,60,.4);background:rgba(231,76,60,.1)}
 .king-role.spy .k-role{color:#e74c3c;font-weight:bold}
-.section-label{font-size:12px;color:#666;margin:8px 0 6px;padding-left:4px;display:flex;align-items:center;gap:4px}
-.section-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.06)}
-
-/* RPS */
+.slot-reels{display:flex;justify-content:center;gap:12px;margin:20px 0}
+.slot-reel{width:70px;height:80px;background:rgba(0,0,0,.4);border:2px solid rgba(255,215,0,.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:40px;overflow:hidden}
+.slot-reel.spinning{animation:slotSpin .15s infinite alternate}
+@keyframes slotSpin{0%{transform:translateY(-5px)}100%{transform:translateY(5px)}}
 .rps-area{display:flex;justify-content:center;gap:16px;margin:16px 0}
 .rps-btn{font-size:48px;background:rgba(0,0,0,.2);border:2px solid rgba(255,255,255,.1);border-radius:16px;width:80px;height:80px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
 .rps-btn:hover{border-color:var(--primary);transform:scale(1.1)}
 .rps-btn.selected{border-color:var(--gold);background:rgba(255,215,0,.1);transform:scale(1.15)}
-.rps-vs{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0;font-size:20px}
-.rps-side{text-align:center}
-.rps-side .rps-emoji{font-size:60px;animation:popIn .3s ease}
-.rps-side .rps-name{font-size:12px;color:var(--text-dim);margin-top:4px}
-
-/* Number guessing */
+.rps-btn.disabled{opacity:.3;pointer-events:none}
+.wolf-card{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;margin:4px;font-size:14px}
+.wolf-card.good{background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);color:#2ecc71}
+.wolf-card.bad{background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.3);color:#e74c3c}
+.wolf-card.special{background:rgba(162,155,254,.15);border:1px solid rgba(162,155,254,.3);color:#a29bfe}
 .guess-area{text-align:center}
 .guess-input{font-size:32px;width:120px;text-align:center;margin:12px auto;display:block}
 .guess-hint{font-size:14px;color:var(--text-dim);margin:8px 0}
 .guess-range{font-size:20px;color:var(--gold);margin:8px 0}
-
-/* Bomb */
-.bomb-visual{font-size:100px;text-align:center;animation:bombShake .1s infinite alternate}
-@keyframes bombShake{0%{transform:translateX(-3px)}100%{transform:translateX(3px)}}
-.bomb-timer{font-size:48px;font-weight:bold;color:var(--red);text-align:center;text-shadow:0 0 20px rgba(255,107,107,.5)}
-
-/* Achievement */
 .achievement{display:flex;align-items:center;gap:12px;padding:12px;background:rgba(0,0,0,.2);border-radius:12px;margin-bottom:8px;border:1px solid rgba(255,215,0,.1)}
 .achievement .a-icon{font-size:32px}
 .achievement .a-info{flex:1}
 .achievement .a-name{font-size:14px;font-weight:bold;color:var(--gold)}
 .achievement .a-desc{font-size:11px;color:#888;margin-top:2px}
 .achievement .a-owner{font-size:12px;color:var(--red);margin-top:2px}
-.achievement.locked{opacity:.4}
-
-/* Chart */
 .chart-bar{display:flex;align-items:center;gap:8px;margin:4px 0}
 .chart-name{font-size:12px;color:var(--text-dim);min-width:50px}
-.chart-fill{height:20px;border-radius:10px;transition:width .5s ease;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:bold}
-
-/* AA calc */
-.aa-total{font-size:28px;font-weight:bold;color:var(--gold);text-align:center;margin:12px 0}
-.aa-per{font-size:36px;font-weight:bold;color:var(--red);text-align:center;margin:8px 0;text-shadow:0 0 15px rgba(255,107,107,.4)}
-
-/* Countdown */
 .countdown-display{font-size:60px;font-weight:bold;color:var(--gold);text-align:center;text-shadow:0 0 20px rgba(255,215,0,.4);margin:20px 0}
-
-/* Slot machine */
-.slot-reels{display:flex;justify-content:center;gap:12px;margin:20px 0}
-.slot-reel{width:70px;height:80px;background:rgba(0,0,0,.4);border:2px solid rgba(255,215,0,.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:40px;overflow:hidden}
-.slot-reel.spinning{animation:slotSpin .15s infinite alternate}
-@keyframes slotSpin{0%{transform:translateY(-5px)}100%{transform:translateY(5px)}}
-
-/* Werewolf */
-.wolf-card{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;margin:4px;font-size:14px}
-.wolf-card.good{background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);color:#2ecc71}
-.wolf-card.bad{background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.3);color:#e74c3c}
-.wolf-card.special{background:rgba(162,155,254,.15);border:1px solid rgba(162,155,254,.3);color:#a29bfe}
-
-/* Arrow */
-.arrow-target{width:200px;height:200px;margin:0 auto;position:relative;background:conic-gradient(#e74c3c 0deg,#fff 0deg,#fff 36deg,#e74c3c 36deg,#e74c3c 72deg,#fff 72deg,#fff 108deg,#e74c3c 108deg,#e74c3c 144deg,#fff 144deg,#fff 180deg,#e74c3c 180deg,#e74c3c 216deg,#fff 216deg,#fff 252deg,#e74c3c 252deg,#e74c3c 288deg,#fff 288deg,#fff 324deg,#e74c3c 324deg);border-radius:50%;border:3px solid var(--gold)}
-.arrow-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:bold;color:#000}
-.arrow-hit{position:absolute;font-size:24px;transform:translate(-50%,-50%);z-index:5;animation:arrowLand .3s ease}
-@keyframes arrowLand{0%{transform:translate(-50%,-100%);opacity:0}100%{transform:translate(-50%,-50%);opacity:1}}
-
-/* Fortune */
 .fortune-card{background:linear-gradient(135deg,rgba(162,155,254,.15),rgba(255,215,0,.1));border:2px solid rgba(162,155,254,.2);border-radius:16px;padding:20px;text-align:center;margin:12px 0}
 .fortune-emoji{font-size:60px;margin-bottom:8px}
 .fortune-level{font-size:24px;font-weight:bold;color:var(--gold);margin-bottom:6px}
@@ -212,6 +228,7 @@ textarea::placeholder,input::placeholder{color:#555}
   <div class="header">
     <h1>🎰 随机抽取大师</h1>
     <div class="header-actions">
+      <div class="icon-btn" onclick="showPage('online')" title="联机" id="onlineBtn">🌐</div>
       <div class="icon-btn" onclick="showPage('group')" title="社会主义群" id="groupBtn">☭</div>
       <div class="icon-btn" onclick="showPage('settings')" title="设置">⚙️</div>
       <div class="icon-btn" onclick="showPage('presets')" title="预设">📋</div>
@@ -223,209 +240,175 @@ textarea::placeholder,input::placeholder{color:#555}
   <div class="page active" id="page-home">
     <div class="tabs" id="presetTabs"></div>
     <div class="wheel-section">
-      <div class="wheel-wrap">
-        <div class="wheel-pointer">▼</div>
-        <canvas id="wheel" width="600" height="600"></canvas>
-      </div>
+      <div class="wheel-wrap"><div class="wheel-pointer">▼</div><canvas id="wheel" width="600" height="600"></canvas></div>
       <button class="spin-btn" id="spinBtn" onclick="spin()">🎯 开始抽取</button>
     </div>
-    <div class="result-card" id="resultCard" style="display:none;">
-      <div class="result-label">🎯 抽取结果</div>
-      <div class="result-text" id="resultText"></div>
-      <div class="result-sub" id="resultSub"></div>
+    <div class="result-card" id="resultCard" style="display:none;"><div class="result-label">🎯 抽取结果</div><div class="result-text" id="resultText"></div><div class="result-sub" id="resultSub"></div></div>
+    <div class="card"><div class="card-title">📝 候选名单 <span class="badge" id="itemCount">0项</span></div><textarea id="itemInput" placeholder="每行一个选项&#10;例如：张三、李四、王五" oninput="onInputChange()"></textarea><div class="chips" id="quickPresets"></div></div>
+    <div class="card"><div class="card-title">📜 历史记录 <span class="badge" id="historyCount">0条</span></div><div id="historyList"></div><div class="empty" id="historyEmpty">暂无记录</div></div>
+  </div>
+
+  <!-- ONLINE PAGE -->
+  <div class="page" id="page-online">
+    <div class="online-banner"><h2>🌐 联机大厅</h2><div class="sub">创建或加入房间，多人实时对战</div></div>
+
+    <!-- Not in room -->
+    <div id="lobbyCreate">
+      <div class="card">
+        <div class="card-title">🏠 创建房间</div>
+        <input type="text" id="myNameInput" placeholder="输入你的昵称" maxlength="8" style="margin-bottom:10px;">
+        <button class="btn btn-primary" style="width:100%;" onclick="createRoom()">🚀 创建房间</button>
+      </div>
+      <div class="card">
+        <div class="card-title">🔗 加入房间</div>
+        <input type="text" id="joinCodeInput" placeholder="输入房间号（4位数字）" maxlength="4" style="margin-bottom:10px;">
+        <input type="text" id="joinNameInput" placeholder="输入你的昵称" maxlength="8" style="margin-bottom:10px;">
+        <button class="btn btn-gold" style="width:100%;" onclick="joinRoom()">🎮 加入房间</button>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-title">📝 候选名单 <span class="badge" id="itemCount">0项</span></div>
-      <textarea id="itemInput" placeholder="每行一个选项&#10;例如：张三、李四、王五" oninput="onInputChange()"></textarea>
-      <div class="chips" id="quickPresets"></div>
+
+    <!-- In room lobby -->
+    <div id="inLobby" style="display:none;">
+      <div class="card">
+        <div class="card-title">🏠 房间 <span class="badge" id="roomCodeBadge"></span></div>
+        <div class="room-section">
+          <div class="room-code-label">分享房间号给朋友</div>
+          <div class="room-code" id="roomCodeDisplay"></div>
+          <button class="btn btn-outline" style="font-size:12px;padding:6px 16px;" onclick="copyRoomCode()">📋 复制房间号</button>
+        </div>
+        <div style="margin-top:12px;">
+          <div style="font-size:13px;color:#888;margin-bottom:8px;">在线玩家：</div>
+          <div class="lobby-members" id="lobbyMembers"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" style="flex:1;" onclick="startOnlineGame()">🎮 开始游戏</button>
+          <button class="btn btn-red" style="flex:0;" onclick="leaveRoom()">🚪 离开</button>
+        </div>
+      </div>
+
+      <!-- Chat -->
+      <div class="card">
+        <div class="card-title">💬 聊天</div>
+        <div class="chat-box" id="chatBox"></div>
+        <div class="chat-input-wrap">
+          <input type="text" id="chatInput" placeholder="说点什么..." maxlength="100" onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="btn btn-primary" style="flex:0;padding:10px 16px;" onclick="sendChat()">发送</button>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-title">📜 历史记录 <span class="badge" id="historyCount">0条</span></div>
-      <div id="historyList"></div>
-      <div class="empty" id="historyEmpty">暂无记录</div>
+
+    <!-- Online Game Area -->
+    <div id="onlineGameArea" style="display:none;">
+      <div class="online-status"><div class="online-dot"></div><span id="onlineStatusText">联机中</span></div>
+      <div id="onlineGameContent"></div>
     </div>
   </div>
 
   <!-- 社会主义群 PAGE -->
   <div class="page" id="page-group">
-    <div class="group-banner">
-      <h2>☭ 社会主义群</h2>
-      <div class="members">徐源 · 李永宁 · 周玉韬 · 康博源 · 齐雪秀</div>
-    </div>
-    <div class="member-tags">
-      <span class="member-tag">😎 徐源</span>
-      <span class="member-tag">🤓 李永宁</span>
-      <span class="member-tag">😏 周玉韬</span>
-      <span class="member-tag">🧐 康博源</span>
-      <span class="member-tag">😄 齐雪秀</span>
-    </div>
-
-    <!-- 积分榜 -->
-    <div class="card">
-      <div class="card-title">🏆 积分榜 <span class="badge">实时排名</span></div>
-      <div class="score-board" id="scoreBoard"></div>
-      <div class="btn-row" style="margin-top:8px;">
-        <button class="btn btn-outline" style="font-size:12px;padding:6px 12px;" onclick="resetScores()">重置积分</button>
-      </div>
-    </div>
-
-    <!-- 群互动类 -->
-    <div class="card">
-      <div class="card-title">🎮 群互动</div>
-      <div class="fun-grid">
-        <div class="fun-card" onclick="groupGame('punishment')"><div class="emoji">🎲</div><div class="label">真心话大冒险</div><div class="desc">随机选人+惩罚</div></div>
-        <div class="fun-card" onclick="groupGame('treat')"><div class="emoji">💰</div><div class="label">今天谁请客</div><div class="desc">天选买单人</div></div>
-        <div class="fun-card" onclick="groupGame('dice')"><div class="emoji">🎯</div><div class="label">掷骰子比大小</div><div class="desc">全员骰子PK</div></div>
-        <div class="fun-card" onclick="groupGame('quiz')"><div class="emoji">🧠</div><div class="label">知识抢答</div><div class="desc">随机出题抢答</div></div>
-        <div class="fun-card" onclick="groupGame('vote')"><div class="emoji">📊</div><div class="label">匿名投票</div><div class="desc">群里那些事</div></div>
-        <div class="fun-card" onclick="groupGame('king')"><div class="emoji">👑</div><div class="label">谁是卧底</div><div class="desc">随机分配角色</div></div>
-        <div class="fun-card" onclick="groupGame('rps')"><div class="emoji">✊</div><div class="label">石头剪刀布</div><div class="desc">锦标赛PK</div></div>
-        <div class="fun-card" onclick="groupGame('guess')"><div class="emoji">🔢</div><div class="label">猜数字</div><div class="desc">猜中喝酒</div></div>
-        <div class="fun-card" onclick="groupGame('order')"><div class="emoji">📱</div><div class="label">抽签定顺序</div><div class="desc">发言/吃饭顺序</div></div>
-        <div class="fun-card" onclick="groupGame('sing')"><div class="emoji">🎤</div><div class="label">K歌挑战</div><div class="desc">随机抽歌+抽人</div></div>
-        <div class="fun-card" onclick="groupGame('bomb')"><div class="emoji">💣</div><div class="label">定时炸弹</div><div class="desc">传到谁谁爆炸</div></div>
-        <div class="fun-card" onclick="groupGame('idiom')"><div class="emoji">🗣</div><div class="label">成语接龙</div><div class="desc">随机开局</div></div>
-      </div>
-    </div>
-
-    <!-- 聚会实用类 -->
-    <div class="card">
-      <div class="card-title">🍻 聚会实用</div>
-      <div class="fun-grid">
-        <div class="fun-card" onclick="groupGame('milktea')"><div class="emoji">🧋</div><div class="label">奶茶签到</div><div class="desc">今天谁请奶茶</div></div>
-        <div class="fun-card" onclick="groupGame('photo')"><div class="emoji">📸</div><div class="label">群相册</div><div class="desc">抽人拍照记录</div></div>
-        <div class="fun-card" onclick="groupGame('drive')"><div class="emoji">🚗</div><div class="label">谁来开车</div><div class="desc">聚会结束送人</div></div>
-        <div class="fun-card" onclick="groupGame('aa')"><div class="emoji">💰</div><div class="label">AA计算器</div><div class="desc">自动算每人多少</div></div>
-        <div class="fun-card" onclick="groupGame('gift')"><div class="emoji">🎁</div><div class="label">礼物交换</div><div class="desc">抽签交换礼物</div></div>
-        <div class="fun-card" onclick="groupGame('bgm')"><div class="emoji">🎵</div><div class="label">随机BGM</div><div class="desc">聚会放什么歌</div></div>
-        <div class="fun-card" onclick="groupGame('countdown')"><div class="emoji">📅</div><div class="label">倒数日</div><div class="desc">下次聚会倒计时</div></div>
-        <div class="fun-card" onclick="groupGame('drink')"><div class="emoji">🍺</div><div class="label">喝酒轮盘</div><div class="desc">转到谁谁喝</div></div>
-        <div class="fun-card" onclick="groupGame('task')"><div class="emoji">📋</div><div class="label">随机任务</div><div class="desc">活动分工抽签</div></div>
-      </div>
-    </div>
-
-    <!-- 数据统计类 -->
-    <div class="card">
-      <div class="card-title">📊 数据统计</div>
-      <div class="fun-grid">
-        <div class="fun-card" onclick="groupGame('stats')"><div class="emoji">🏅</div><div class="label">历史战绩</div><div class="desc">谁赢最多/输最多</div></div>
-        <div class="fun-card" onclick="groupGame('streak')"><div class="emoji">🔥</div><div class="label">连胜记录</div><div class="desc">当前连胜/连败</div></div>
-        <div class="fun-card" onclick="groupGame('chart')"><div class="emoji">📈</div><div class="label">积分走势</div><div class="desc">可视化积分变化</div></div>
-        <div class="fun-card" onclick="groupGame('achievement')"><div class="emoji">🏆</div><div class="label">成就系统</div><div class="desc">各种奇葩成就</div></div>
-        <div class="fun-card" onclick="groupGame('mvp')"><div class="emoji">👑</div><div class="label">月度MVP</div><div class="desc">本月积分最高</div></div>
-      </div>
-    </div>
-
-    <!-- 进阶游戏 -->
-    <div class="card">
-      <div class="card-title">🎲 进阶游戏</div>
-      <div class="fun-grid">
-        <div class="fun-card" onclick="groupGame('werewolf')"><div class="emoji">🐺</div><div class="label">狼人杀</div><div class="desc">随机分配角色</div></div>
-        <div class="fun-card" onclick="groupGame('arrow')"><div class="emoji">🎯</div><div class="label">射箭比赛</div><div class="desc">随机靶心PK</div></div>
-        <div class="fun-card" onclick="groupGame('slot')"><div class="emoji">🎰</div><div class="label">老虎机</div><div class="desc">三个轮盘中奖</div></div>
-        <div class="fun-card" onclick="groupGame('tacit')"><div class="emoji">📝</div><div class="label">默契考验</div><div class="desc">看谁答案一致</div></div>
-        <div class="fun-card" onclick="groupGame('meme')"><div class="emoji">🤪</div><div class="label">表情包大赛</div><div class="desc">随机主题PK</div></div>
-      </div>
-    </div>
-
-    <!-- 趣味工具 -->
-    <div class="card">
-      <div class="card-title">✨ 趣味工具</div>
-      <div class="fun-grid">
-        <div class="fun-card" onclick="groupGame('nickname')"><div class="emoji">🏷</div><div class="label">群昵称生成</div><div class="desc">随机搞笑昵称</div></div>
-        <div class="fun-card" onclick="groupGame('fortune')"><div class="emoji">🔮</div><div class="label">今日运势</div><div class="desc">看看谁最倒霉</div></div>
-        <div class="fun-card" onclick="groupGame('compliment')"><div class="emoji">💝</div><div class="label">彩虹屁</div><div class="desc">随机夸夸</div></div>
-        <div class="fun-card" onclick="groupGame('chicken')"><div class="emoji">🐔</div><div class="label">毒鸡汤</div><div class="desc">心灵毒鸡汤</div></div>
-        <div class="fun-card" onclick="groupGame('slogan')"><div class="emoji">📢</div><div class="label">群口号生成</div><div class="desc">随机群口号</div></div>
-        <div class="fun-card" onclick="groupGame('luck')"><div class="emoji">🍀</div><div class="label">今日运势</div><div class="desc">每人抽运势</div></div>
-      </div>
-    </div>
-
+    <div class="group-banner"><h2>☭ 社会主义群</h2><div class="members">徐源 · 李永宁 · 周玉韬 · 康博源 · 齐雪秀</div></div>
+    <div class="member-tags"><span class="member-tag">😎 徐源</span><span class="member-tag">🤓 李永宁</span><span class="member-tag">😏 周玉韬</span><span class="member-tag">🧐 康博源</span><span class="member-tag">😄 齐雪秀</span></div>
+    <div class="card"><div class="card-title">🏆 积分榜 <span class="badge">实时排名</span></div><div class="score-board" id="scoreBoard"></div><div class="btn-row" style="margin-top:8px;"><button class="btn btn-outline" style="font-size:12px;padding:6px 12px;" onclick="resetScores()">重置积分</button></div></div>
+    <div class="card"><div class="card-title">🎮 群互动</div><div class="fun-grid">
+      <div class="fun-card" onclick="groupGame('punishment')"><div class="emoji">🎲</div><div class="label">真心话大冒险</div><div class="desc">随机选人+惩罚</div></div>
+      <div class="fun-card" onclick="groupGame('treat')"><div class="emoji">💰</div><div class="label">今天谁请客</div><div class="desc">天选买单人</div></div>
+      <div class="fun-card" onclick="groupGame('dice')"><div class="emoji">🎯</div><div class="label">掷骰子比大小</div><div class="desc">全员骰子PK</div></div>
+      <div class="fun-card" onclick="groupGame('quiz')"><div class="emoji">🧠</div><div class="label">知识抢答</div><div class="desc">随机出题抢答</div></div>
+      <div class="fun-card" onclick="groupGame('vote')"><div class="emoji">📊</div><div class="label">匿名投票</div><div class="desc">群里那些事</div></div>
+      <div class="fun-card" onclick="groupGame('king')"><div class="emoji">👑</div><div class="label">谁是卧底</div><div class="desc">随机分配角色</div></div>
+      <div class="fun-card" onclick="groupGame('rps')"><div class="emoji">✊</div><div class="label">石头剪刀布</div><div class="desc">锦标赛PK</div></div>
+      <div class="fun-card" onclick="groupGame('guess')"><div class="emoji">🔢</div><div class="label">猜数字</div><div class="desc">猜中喝酒</div></div>
+      <div class="fun-card" onclick="groupGame('order')"><div class="emoji">📱</div><div class="label">抽签定顺序</div><div class="desc">发言/吃饭顺序</div></div>
+      <div class="fun-card" onclick="groupGame('sing')"><div class="emoji">🎤</div><div class="label">K歌挑战</div><div class="desc">随机抽歌+抽人</div></div>
+      <div class="fun-card" onclick="groupGame('bomb')"><div class="emoji">💣</div><div class="label">定时炸弹</div><div class="desc">传到谁谁爆炸</div></div>
+      <div class="fun-card" onclick="groupGame('idiom')"><div class="emoji">🗣</div><div class="label">成语接龙</div><div class="desc">随机开局</div></div>
+    </div></div>
+    <div class="card"><div class="card-title">🍻 聚会实用</div><div class="fun-grid">
+      <div class="fun-card" onclick="groupGame('milktea')"><div class="emoji">🧋</div><div class="label">奶茶签到</div><div class="desc">今天谁请奶茶</div></div>
+      <div class="fun-card" onclick="groupGame('drive')"><div class="emoji">🚗</div><div class="label">谁来开车</div><div class="desc">聚会结束送人</div></div>
+      <div class="fun-card" onclick="groupGame('aa')"><div class="emoji">💰</div><div class="label">AA计算器</div><div class="desc">自动算每人多少</div></div>
+      <div class="fun-card" onclick="groupGame('gift')"><div class="emoji">🎁</div><div class="label">礼物交换</div><div class="desc">抽签交换礼物</div></div>
+      <div class="fun-card" onclick="groupGame('bgm')"><div class="emoji">🎵</div><div class="label">随机BGM</div><div class="desc">聚会放什么歌</div></div>
+      <div class="fun-card" onclick="groupGame('drink')"><div class="emoji">🍺</div><div class="label">喝酒轮盘</div><div class="desc">转到谁谁喝</div></div>
+    </div></div>
+    <div class="card"><div class="card-title">🎲 进阶游戏</div><div class="fun-grid">
+      <div class="fun-card" onclick="groupGame('werewolf')"><div class="emoji">🐺</div><div class="label">狼人杀</div><div class="desc">随机分配角色</div></div>
+      <div class="fun-card" onclick="groupGame('slot')"><div class="emoji">🎰</div><div class="label">老虎机</div><div class="desc">三个轮盘中奖</div></div>
+      <div class="fun-card" onclick="groupGame('fortune')"><div class="emoji">🔮</div><div class="label">今日运势</div><div class="desc">看看谁最倒霉</div></div>
+      <div class="fun-card" onclick="groupGame('nickname')"><div class="emoji">🏷</div><div class="label">群昵称生成</div><div class="desc">随机搞笑昵称</div></div>
+    </div></div>
     <div id="groupResultArea"></div>
   </div>
 
   <!-- PRESETS PAGE -->
   <div class="page" id="page-presets">
-    <div class="card">
-      <div class="card-title">📋 我的预设</div>
-      <div id="customPresetsList"></div>
-      <div class="empty" id="presetsEmpty">还没有自定义预设</div>
-      <div class="btn-row"><button class="btn btn-primary" onclick="showAddPreset()">➕ 新建预设</button></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📦 内置预设</div>
-      <div id="builtInPresetsList"></div>
-    </div>
+    <div class="card"><div class="card-title">📋 我的预设</div><div id="customPresetsList"></div><div class="empty" id="presetsEmpty">还没有自定义预设</div><div class="btn-row"><button class="btn btn-primary" onclick="showAddPreset()">➕ 新建预设</button></div></div>
+    <div class="card"><div class="card-title">📦 内置预设</div><div id="builtInPresetsList"></div></div>
   </div>
 
   <!-- SETTINGS PAGE -->
   <div class="page" id="page-settings">
-    <div class="card">
-      <div class="card-title">⚙️ 抽取设置</div>
+    <div class="card"><div class="card-title">⚙️ 抽取设置</div>
       <div class="setting"><span class="setting-label">抽取人数</span><div class="setting-value"><input type="number" class="num-input" id="pickCount" value="1" min="1" max="50" onchange="saveSettings()"></div></div>
       <div class="setting"><span class="setting-label">已抽中不重复</span><div class="setting-value"><div class="toggle on" id="toggleNoRepeat" onclick="toggleSwitch(this); saveSettings()"></div></div></div>
       <div class="setting"><span class="setting-label">音效</span><div class="setting-value"><div class="toggle on" id="toggleSound" onclick="toggleSwitch(this); saveSettings()"></div></div></div>
       <div class="setting"><span class="setting-label">弹窗特效</span><div class="setting-value"><div class="toggle on" id="toggleEffect" onclick="toggleSwitch(this); saveSettings()"></div></div></div>
     </div>
-    <div class="card">
-      <div class="card-title">🎨 主题颜色</div>
-      <div class="color-options" id="themeColors"></div>
+    <div class="card"><div class="card-title">🎨 主题颜色</div><div class="color-options" id="themeColors"></div></div>
+    <div class="card"><div class="card-title">💾 数据管理</div>
+      <div class="btn-row"><button class="btn btn-outline" onclick="exportData()">📤 导出</button><button class="btn btn-outline" onclick="importData()">📥 导入</button></div>
+      <div class="btn-row"><button class="btn btn-outline" style="border-color:rgba(231,76,60,.3);color:#e74c3c;" onclick="clearHistory()">🗑️ 清空历史</button><button class="btn btn-outline" style="border-color:rgba(231,76,60,.3);color:#e74c3c;" onclick="resetAll()">⚠️ 重置</button></div>
     </div>
-    <div class="card">
-      <div class="card-title">💾 数据管理</div>
-      <div class="btn-row"><button class="btn btn-outline" onclick="exportData()">📤 导出数据</button><button class="btn btn-outline" onclick="importData()">📥 导入数据</button></div>
-      <div class="btn-row"><button class="btn btn-outline" style="border-color:rgba(231,76,60,.3);color:#e74c3c;" onclick="clearHistory()">🗑️ 清空历史</button><button class="btn btn-outline" style="border-color:rgba(231,76,60,.3);color:#e74c3c;" onclick="resetAll()">⚠️ 重置全部</button></div>
-    </div>
-    <div class="card">
-      <div class="card-title">ℹ️ 关于</div>
-      <div style="font-size:13px;color:#888;line-height:1.8;">随机抽取大师 v4.0<br>支持转盘抽取、自定义预设、37个群游戏<br>社会主义群专属模块 🔥<br>数据保存在本地，隐私安全</div>
-    </div>
+    <div class="card"><div class="card-title">ℹ️ 关于</div><div style="font-size:13px;color:#888;line-height:1.8;">随机抽取大师 v5.0 联机版<br>支持联机对战 + 群游戏<br>数据保存在本地，隐私安全</div></div>
   </div>
 </div>
 
-<!-- Result Modal -->
-<div class="modal-bg" id="resultModal">
-  <div class="modal result-modal">
-    <div class="emoji">🎉</div>
-    <div class="big-result" id="modalResultText"></div>
-    <button class="btn btn-gold" onclick="closeModal()" style="width:100%;">知道了</button>
-  </div>
-</div>
-
-<!-- Group Game Modal -->
-<div class="modal-bg" id="groupModal">
-  <div class="modal">
-    <div class="modal-title"><span id="groupModalTitle">游戏</span><div class="modal-close" onclick="closeGroupModal()">✕</div></div>
-    <div id="groupModalContent"></div>
-  </div>
-</div>
-
-<!-- Add Preset Modal -->
-<div class="modal-bg" id="addPresetModal">
-  <div class="modal">
-    <div class="modal-title">新建预设<div class="modal-close" onclick="closePresetModal()">✕</div></div>
-    <input type="text" id="presetNameInput" placeholder="预设名称" style="margin-bottom:10px;">
-    <textarea id="presetItemsInput" placeholder="每行一个选项" style="height:150px;"></textarea>
-    <div class="btn-row"><button class="btn btn-outline" onclick="closePresetModal()">取消</button><button class="btn btn-primary" onclick="savePreset()">保存</button></div>
-  </div>
-</div>
-
-<!-- Import Modal -->
-<div class="modal-bg" id="importModal">
-  <div class="modal">
-    <div class="modal-title">导入数据<div class="modal-close" onclick="document.getElementById('importModal').classList.remove('show')">✕</div></div>
-    <textarea id="importDataInput" placeholder="粘贴导出的JSON数据" style="height:150px;"></textarea>
-    <div class="btn-row"><button class="btn btn-outline" onclick="document.getElementById('importModal').classList.remove('show')">取消</button><button class="btn btn-primary" onclick="doImport()">导入</button></div>
-  </div>
-</div>
-
+<!-- Modals -->
+<div class="modal-bg" id="resultModal"><div class="modal result-modal"><div class="emoji">🎉</div><div class="big-result" id="modalResultText"></div><button class="btn btn-gold" onclick="closeModal()" style="width:100%;">知道了</button></div></div>
+<div class="modal-bg" id="groupModal"><div class="modal"><div class="modal-title"><span id="groupModalTitle">游戏</span><div class="modal-close" onclick="closeGroupModal()">✕</div></div><div id="groupModalContent"></div></div></div>
+<div class="modal-bg" id="addPresetModal"><div class="modal"><div class="modal-title">新建预设<div class="modal-close" onclick="closePresetModal()">✕</div></div><input type="text" id="presetNameInput" placeholder="预设名称" style="margin-bottom:10px;"><textarea id="presetItemsInput" placeholder="每行一个选项" style="height:150px;"></textarea><div class="btn-row"><button class="btn btn-outline" onclick="closePresetModal()">取消</button><button class="btn btn-primary" onclick="savePreset()">保存</button></div></div></div>
+<div class="modal-bg" id="importModal"><div class="modal"><div class="modal-title">导入数据<div class="modal-close" onclick="document.getElementById('importModal').classList.remove('show')">✕</div></div><textarea id="importDataInput" placeholder="粘贴导出的JSON数据" style="height:150px;"></textarea><div class="btn-row"><button class="btn btn-outline" onclick="document.getElementById('importModal').classList.remove('show')">取消</button><button class="btn btn-primary" onclick="doImport()">导入</button></div></div></div>
+<div class="modal-bg" id="nameModal"><div class="modal"><div class="modal-title">选择你的昵称<div class="modal-close" onclick="closeNameModal()">✕</div></div><input type="text" id="nameModalInput" placeholder="输入昵称" maxlength="8" style="margin-bottom:12px;"><button class="btn btn-primary" style="width:100%;" onclick="confirmName()">确认</button></div></div>
 <input type="file" id="fileInput" accept=".json" style="display:none" onchange="handleFile(event)">
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
+// ========== FIREBASE CONFIG ==========
+// ⚠️ 替换为你自己的 Firebase 配置
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+let db = null;
+let roomRef = null;
+let myId = null;
+let myName = '';
+let roomCode = '';
+let isHost = false;
+let onlineMembers = {};
+let currentGame = null;
+let myChoice = null;
+let gameData = {};
+
+// Try to init Firebase
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  console.log('Firebase initialized');
+} catch(e) {
+  console.log('Firebase not configured, online mode disabled');
+}
+
 // ========== DATA ==========
 const GROUP = ['徐源','李永宁','周玉韬','康博源','齐雪秀'];
 const GEMOJI = {'徐源':'😎','李永宁':'🤓','周玉韬':'😏','康博源':'🧐','齐雪秀':'😄'};
-
 const BUILT_IN_PRESETS = {
   group:{name:'☭ 社会主义群',items:GROUP},
   team:{name:'👥 团队分工',items:['张三','李四','王五','赵六','钱七','孙八','周九','吴十']},
@@ -437,555 +420,447 @@ const BUILT_IN_PRESETS = {
   fruit:{name:'🍎 水果',items:['苹果','香蕉','橘子','葡萄','西瓜','草莓','芒果','菠萝','猕猴桃','樱桃','桃子','梨']},
   color:{name:'🎨 颜色',items:['红色','蓝色','绿色','黄色','紫色','粉色','橙色','白色','黑色','青色']}
 };
+const THEMES = [{name:'冰蓝',primary:'#00d4ff',dark:'#0072ff'},{name:'樱花',primary:'#ff6b9d',dark:'#c44569'},{name:'薄荷',primary:'#00b894',dark:'#00897b'},{name:'日落',primary:'#fdcb6e',dark:'#e17055'},{name:'薰衣草',primary:'#a29bfe',dark:'#6c5ce7'},{name:'珊瑚',primary:'#ff7675',dark:'#d63031'},{name:'星空',primary:'#74b9ff',dark:'#0984e3'},{name:'金色',primary:'#ffd700',dark:'#f39c12'}];
 
-const THEMES = [
-  {name:'冰蓝',primary:'#00d4ff',dark:'#0072ff'},
-  {name:'樱花',primary:'#ff6b9d',dark:'#c44569'},
-  {name:'薄荷',primary:'#00b894',dark:'#00897b'},
-  {name:'日落',primary:'#fdcb6e',dark:'#e17055'},
-  {name:'薰衣草',primary:'#a29bfe',dark:'#6c5ce7'},
-  {name:'珊瑚',primary:'#ff7675',dark:'#d63031'},
-  {name:'星空',primary:'#74b9ff',dark:'#0984e3'},
-  {name:'金色',primary:'#ffd700',dark:'#f39c12'}
-];
+const TRUTH_Q=['你最近一次偷偷哭是因为什么？','你手机里最不想让别人看到的是什么？','你对群里谁的第一印象最差？','你做过最丢人的事是什么？','你暗恋过几个人？','你撒过最大的谎是什么？','你最想删掉的一段记忆是什么？','你偷偷关注过谁的社交媒体？','你对谁说过违心的话？','你最怕被谁知道你的秘密？'];
+const DARE_Q=['给你的暗恋对象发一条"我想你了"','模仿群里一个人说话方式1分钟','发一条朋友圈：我单身求撩','给最近聊天的人打电话说"我爱你"','学猫叫10声','做20个俯卧撑','唱一首歌的高潮部分','原地转10圈然后走直线','发语音说"我是猪"发到群里','做10个深蹲跳'];
+const QUIZ_Q=[{q:'地球到月球的距离约是多少？',a:'38万公里',opts:['38万公里','100万公里','10万公里','1000万公里']},{q:'世界上最大的海洋是？',a:'太平洋',opts:['太平洋','大西洋','印度洋','北冰洋']},{q:'人体最大的器官是？',a:'皮肤',opts:['皮肤','肝脏','大脑','心脏']},{q:'光速约是多少？',a:'30万公里/秒',opts:['30万公里/秒','30万米/秒','30亿米/秒','3000公里/秒']},{q:'太阳系最大的行星是？',a:'木星',opts:['木星','土星','天王星','海王星']},{q:'水的化学式是？',a:'H₂O',opts:['H₂O','CO₂','NaCl','O₂']},{q:'地球上最高的山峰是？',a:'珠穆朗玛峰',opts:['珠穆朗玛峰','K2','干城章嘉峰','洛子峰']},{q:'中国有多少个省级行政区？',a:'34个',opts:['34个','32个','36个','30个']}];
+const VOTE_TOPICS=[{topic:'群里谁最可能单身一辈子？',opts:GROUP},{topic:'谁最可能成为亿万富翁？',opts:GROUP},{topic:'谁最可能当老板？',opts:GROUP},{topic:'谁最靠谱？',opts:GROUP},{topic:'谁是群里的开心果？',opts:GROUP}];
+const SONGS=['晴天 - 周杰伦','光辉岁月 - Beyond','小幸运 - 田馥甄','告白气球 - 周杰伦','海阔天空 - Beyond','稻香 - 周杰伦','起风了 - 买辣椒也用券','孤勇者 - 陈奕迅','平凡之路 - 朴树','倔强 - 五月天'];
+const SLOT_EMOJIS=['🍒','🍋','🍊','🍇','💎','7️⃣','⭐','🔔'];
+const DICE_F=['⚀','⚁','⚂','⚃','⚄','⚅'];
+const LUCK_F=[{level:'大吉',emoji:'🌟',desc:'今天万事如意！',score:3},{level:'中吉',emoji:'✨',desc:'运气不错',score:2},{level:'小吉',emoji:'🍀',desc:'小幸运在线',score:1},{level:'平',emoji:'😐',desc:'平淡是真',score:0},{level:'小凶',emoji:'😰',desc:'小心水逆',score:-1},{level:'凶',emoji:'💀',desc:'建议躺平',score:-2},{level:'大凶',emoji:'☠️',desc:'远离人群',score:-3},{level:'超吉',emoji:'🌈',desc:'天选之子！',score:5}];
+const WOLF_ROLES=['🐺 狼人','🐺 狼人','🔮 预言家','💊 女巫','🏹 猎人','👤 村民','👤 村民','👤 村民'];
+const NICKNAMES=['人间小太阳','快乐源泉','搞笑担当','颜值天花板','气氛组组长','摸鱼大师','干饭王','社恐本恐','快乐小狗','人间清醒','废话文学家','表情包大户','嘴替','社交恐怖分子','宝藏男孩/女孩','行走的段子手','快乐制造机','群宠','梗王','可爱鬼'];
+const SLOGANS=['今天也要加油鸭！','干饭人干饭魂！','冲冲冲，奥利给！','我们不一样！','社会主义好！','团结就是力量！','不抛弃不放弃！','人间值得！','干就完了！','热爱可抵岁月漫长！'];
+const CHICKEN=['你觉得自己很累？别人也很累','不要因为没有掌声而放弃梦想，因为你根本没有梦想','世上无难事，只要肯放弃','比你优秀的人都在努力，你努力有什么用','条条大路通罗马，而有些人就生在罗马','失败并不可怕，可怕的是你还相信这句话','你才二十多岁，没遇到喜欢的人很正常，往后你会发现，大概是遇不到了'];
+const COMPLIMENTS=['你今天也太好看了吧！','你的笑容能治愈一切！','和你在一起就是开心！','你简直是人间宝藏！','你做什么都这么优秀！','你是我见过最有趣的人！','你的品味真的绝了！','你就是行走的荷尔蒙！','有你在的群都不会冷场！','你简直是全能型人才！'];
 
-const TRUTH_Q = ['你最近一次偷偷哭是因为什么？','你手机里最不想让别人看到的是什么？','你对群里谁的第一印象最差？','你做过最丢人的事是什么？','你暗恋过几个人？','你撒过最大的谎是什么？','你最想删掉的一段记忆是什么？','你偷偷关注过谁的社交媒体？','你对谁说过违心的话？','你最怕被谁知道你的秘密？','你做过最后悔的决定是什么？','你半夜偷偷吃过什么？','你最不想让父母知道的事？','你在群里最想吐槽谁？','你觉得自己最大的缺点是什么？','你最后一次说谎是什么时候？','你最尴尬的一次经历？','你有没有偷偷喜欢群里某个人？'];
-const DARE_Q = ['给你的暗恋对象发一条"我想你了"','模仿群里一个人说话方式1分钟','发一条朋友圈：我单身求撩','给最近聊天的人打电话说"我爱你"','学猫叫10声','做20个俯卧撑','唱一首歌的高潮部分','原地转10圈然后走直线','让右边的人给你画个妆','发语音说"我是猪"发到群里','模仿一个明星的动作','闭眼让别人在你脸上画画','吃一口辣椒/芥末','用屁股写自己的名字','给前任发一条"你还好吗"','用方言唱一首歌','打电话给爸妈说"我想你们了"','发朋友圈夸群里一个人','做10个深蹲跳','对着镜头比心说"我爱你们"'];
-const QUIZ_Q = [
-  {q:'地球到月球的距离约是多少？',a:'38万公里',opts:['38万公里','100万公里','10万公里','1000万公里']},
-  {q:'世界上最大的海洋是？',a:'太平洋',opts:['太平洋','大西洋','印度洋','北冰洋']},
-  {q:'人体最大的器官是？',a:'皮肤',opts:['皮肤','肝脏','大脑','心脏']},
-  {q:'光速约是多少？',a:'30万公里/秒',opts:['30万公里/秒','30万米/秒','30亿米/秒','3000公里/秒']},
-  {q:'中国的国宝是什么？',a:'大熊猫',opts:['大熊猫','金丝猴','白鳍豚','东北虎']},
-  {q:'世界上最长的河流是？',a:'尼罗河',opts:['尼罗河','亚马逊河','长江','黄河']},
-  {q:'人体有几块骨头？',a:'206块',opts:['206块','108块','312块','180块']},
-  {q:'太阳系最大的行星是？',a:'木星',opts:['木星','土星','天王星','海王星']},
-  {q:'水的化学式是？',a:'H₂O',opts:['H₂O','CO₂','NaCl','O₂']},
-  {q:'地球上最高的山峰是？',a:'珠穆朗玛峰',opts:['珠穆朗玛峰','K2','干城章嘉峰','洛子峰']},
-  {q:'世界上人口最多的国家是？',a:'中国',opts:['中国','印度','美国','印尼']},
-  {q:'DNA的全称是？',a:'脱氧核糖核酸',opts:['脱氧核糖核酸','核糖核酸','氨基酸','蛋白质']},
-  {q:'一光年约是多少公里？',a:'9.46万亿公里',opts:['9.46万亿公里','9.46亿公里','9460万公里','94.6万亿公里']},
-  {q:'地球上70%是什么？',a:'水',opts:['水','陆地','森林','沙漠']},
-  {q:'中国有多少个省级行政区？',a:'34个',opts:['34个','32个','36个','30个']}
-];
-const VOTE_TOPICS = [
-  {topic:'群里谁最可能单身一辈子？',opts:GROUP},
-  {topic:'谁最可能成为亿万富翁？',opts:GROUP},
-  {topic:'今天中午吃什么？',opts:['火锅','烧烤','麻辣烫','随便']},
-  {topic:'下次聚会去哪？',opts:['KTV','密室逃脱','剧本杀','吃饭']},
-  {topic:'谁最可能出家？',opts:GROUP},
-  {topic:'谁是群里的开心果？',opts:GROUP},
-  {topic:'谁最可能当老板？',opts:GROUP},
-  {topic:'谁最靠谱？',opts:GROUP},
-  {topic:'谁最可能猝死在工位上？',opts:GROUP},
-  {topic:'谁最可能一夜暴富？',opts:GROUP}
-];
-const LUCK_F = [
-  {level:'大吉',emoji:'🌟',desc:'今天万事如意，买彩票可能中奖！',score:3},
-  {level:'中吉',emoji:'✨',desc:'运气不错，适合表白/搞事',score:2},
-  {level:'小吉',emoji:'🍀',desc:'小幸运在线，捡到钱不奇怪',score:1},
-  {level:'平',emoji:'😐',desc:'平淡是真，稳稳的幸福',score:0},
-  {level:'小凶',emoji:'😰',desc:'小心水逆，出门记得带伞',score:-1},
-  {level:'凶',emoji:'💀',desc:'今天建议躺平，别出门了',score:-2},
-  {level:'大凶',emoji:'☠️',desc:'建议今天请假在家，远离人群',score:-3},
-  {level:'超吉',emoji:'🌈',desc:'天选之子！做什么都会成功！',score:5}
-];
-const COMPLIMENTS = ['你今天也太好看了吧！','你的笑容能治愈一切！','和你在一起就是开心！','你简直是人间宝藏！','你做什么都这么优秀！','你是我见过最有趣的人！','你的品味真的绝了！','你就是行走的荷尔蒙！','有你在的群都不会冷场！','你简直是全能型人才！','你的眼光永远那么独到！','你的存在就是一种美好！','你说话总是那么有道理！','你就是我们的精神支柱！','你笑起来真好看！'];
-const DICE_F = ['⚀','⚁','⚂','⚃','⚄','⚅'];
-const SONGS = ['晴天 - 周杰伦','光辉岁月 - Beyond','小幸运 - 田馥甄','告白气球 - 周杰伦','海阔天空 - Beyond','稻香 - 周杰伦','起风了 - 买辣椒也用券','大鱼 - 周深','孤勇者 - 陈奕迅','平凡之路 - 朴树','夜曲 - 周杰伦','红玫瑰 - 陈奕迅','遇见 - 孙燕姿','后来 - 刘若英','童话 - 光良','倔强 - 五月天','简单爱 - 周杰伦','红豆 - 王菲','泡沫 - 邓紫棋','说散就散 - 袁娅维'];
-const CHICKEN = ['你觉得自己很累？别人也很累，别人都没说什么','不要因为没有掌声而放弃梦想，因为你根本没有梦想','世上无难事，只要肯放弃','你不是迷茫，你只是懒','比你优秀的人都在努力，你努力有什么用','条条大路通罗马，而有些人就生在罗马','你多努力一点，老板就能早一点换车','不努力一下，你都不知道什么叫绝望','失败并不可怕，可怕的是你还相信这句话','人生就是这样，有欢笑也有泪水，但你只能哭','别人一问起你，你就和盘托出，你以为这是健谈和热情，其实这是孤独','你的问题在于读书不多而想得太多','别灰心，人生就是这样起起落落落落落落落落的','你才二十多岁，没遇到喜欢的人很正常，往后你会发现，大概是遇不到了','有些人出现在你的生命里，就是为了告诉你，你真好骗'];
-const SLOGANS = ['今天也要加油鸭！','干饭人干饭魂！','冲冲冲，奥利给！','我们不一样！','社会主义好！','团结就是力量！','不抛弃不放弃！','人间值得！','冲就完事了！','干就完了！','我们都是追梦人！','一起向未来！','奋斗吧少年！','热爱可抵岁月漫长！','人间烟火气，最抚凡人心！','生活明朗，万物可爱！'];
-const NICKNAMES = ['人间小太阳','快乐源泉','搞笑担当','颜值天花板','气氛组组长','摸鱼大师','干饭王','社恐本恐','快乐小狗','人间清醒','废话文学家','表情包大户','嘴替','社交恐怖分子','人间理想','宝藏男孩/女孩','行走的段子手','快乐制造机','群宠','团欺','精神股东','气氛破坏者','梗王','嘴炮达人','可爱鬼'];
-const WOLF_ROLES = ['🐺 狼人','🐺 狼人','🔮 预言家','💊 女巫','🏹 猎人','👤 村民','👤 村民','👤 村民'];
-const TACIT_QS = ['你觉得群里谁最帅/美？','你最想和谁一起去旅行？','你觉得谁做饭最好吃？','你最想吐槽群里谁的一个习惯？','你觉得谁最可能迟到？','你最想和谁交换人生一天？','你觉得谁的笑点最低？','你最想听谁唱歌？','你觉得谁最可能中彩票？','你最想和谁一起被困在电梯里？'];
-const ARROW_SCORES = ['脱靶','1环','2环','3环','4环','5环','6环','7环','8环','9环','10环','🎯 X环！'];
-const SLOT_EMOJIS = ['🍒','🍋','🍊','🍇','💎','7️⃣','⭐','🔔'];
+let state={items:[],customPresets:{},history:[],drawnItems:new Set(),scores:{},settings:{pickCount:1,noRepeat:true,sound:true,effect:true,theme:0}};
+let currentAngle=0,isSpinning=false,activePresetKey=null,quizAnswered=false;
+GROUP.forEach(m=>{if(!state.scores[m])state.scores[m]=0});
 
-let state = {
-  items:[], customPresets:{}, history:[], drawnItems:new Set(),
-  scores:{}, streaks:{}, gameHistory:[],
-  settings:{pickCount:1,noRepeat:true,sound:true,effect:true,theme:0}
-};
-let currentAngle = 0, isSpinning = false, activePresetKey = null, quizAnswered = false;
-GROUP.forEach(m=>{if(!state.scores[m])state.scores[m]=0;if(!state.streaks[m])state.streaks[m]={win:0,lose:0,maxWin:0}});
-
-// Audio
 let audioCtx;
 function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
 function playTick(){if(!state.settings.sound)return;try{const c=getAudioCtx(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=600+Math.random()*600;g.gain.value=.04;g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.05);o.start();o.stop(c.currentTime+.05)}catch(e){}}
 function playWin(){if(!state.settings.sound)return;try{const c=getAudioCtx();[523,659,784,1047].forEach((f,i)=>{setTimeout(()=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;g.gain.value=.06;g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.3);o.start();o.stop(c.currentTime+.3)},i*100)})}catch(e){}}
 
-// Storage
-function loadState(){try{const s=localStorage.getItem('randomPickerState');if(s){const p=JSON.parse(s);state={...state,...p,drawnItems:new Set(p.drawnItems||[])}}}catch(e){}GROUP.forEach(m=>{if(!state.scores[m])state.scores[m]=0;if(!state.streaks[m])state.streaks[m]={win:0,lose:0,maxWin:0}})}
-function saveState(){try{const t={...state,drawnItems:[...state.drawnItems]};localStorage.setItem('randomPickerState',JSON.stringify(t))}catch(e){}}
+function loadState(){try{const s=localStorage.getItem('randomPickerState');if(s){const p=JSON.parse(s);state={...state,...p,drawnItems:new Set(p.drawnItems||[])}}}catch(e){}GROUP.forEach(m=>{if(!state.scores[m])state.scores[m]=0})}
+function saveState(){try{localStorage.setItem('randomPickerState',JSON.stringify({...state,drawnItems:[...state.drawnItems]}))}catch(e){}}
 
-// Wheel
 const canvas=document.getElementById('wheel'),ctx=canvas.getContext('2d');
 const COLORS=['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#F7DC6F','#BB8FCE','#85C1E9','#F8C471','#82E0AA','#F1948A','#AED6F1','#D7BDE2','#A3E4D7'];
 
-function drawWheel(angle=0){
-  const cx=300,cy=300,r=270;ctx.clearRect(0,0,600,600);
-  if(state.items.length===0){ctx.fillStyle='rgba(255,255,255,.06)';ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#555';ctx.font='20px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('请先输入候选名单',cx,cy);return}
-  const sl=(Math.PI*2)/state.items.length;
-  state.items.forEach((item,i)=>{const sa=angle+i*sl,ea=sa+sl;ctx.fillStyle=COLORS[i%COLORS.length];ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,sa,ea);ctx.closePath();ctx.fill();ctx.strokeStyle='rgba(0,0,0,.15)';ctx.lineWidth=2;ctx.stroke();ctx.save();ctx.translate(cx,cy);ctx.rotate(sa+sl/2);ctx.fillStyle='#000';ctx.font=`bold ${Math.min(20,Math.max(10,Math.floor(180/state.items.length)))}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';const txt=item.length>7?item.slice(0,7)+'..':item;ctx.fillText(txt,r*.58,0);ctx.restore()});
-  ctx.fillStyle='#1a1a2e';ctx.beginPath();ctx.arc(cx,cy,30,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(0,200,255,.4)';ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#fff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('GO',cx,cy);
-}
+function drawWheel(angle=0){const cx=300,cy=300,r=270;ctx.clearRect(0,0,600,600);if(state.items.length===0){ctx.fillStyle='rgba(255,255,255,.06)';ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#555';ctx.font='20px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('请先输入候选名单',cx,cy);return}const sl=(Math.PI*2)/state.items.length;state.items.forEach((item,i)=>{const sa=angle+i*sl,ea=sa+sl;ctx.fillStyle=COLORS[i%COLORS.length];ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,sa,ea);ctx.closePath();ctx.fill();ctx.strokeStyle='rgba(0,0,0,.15)';ctx.lineWidth=2;ctx.stroke();ctx.save();ctx.translate(cx,cy);ctx.rotate(sa+sl/2);ctx.fillStyle='#000';ctx.font=`bold ${Math.min(20,Math.max(10,Math.floor(180/state.items.length)))}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';const txt=item.length>7?item.slice(0,7)+'..':item;ctx.fillText(txt,r*.58,0);ctx.restore()});ctx.fillStyle='#1a1a2e';ctx.beginPath();ctx.arc(cx,cy,30,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(0,200,255,.4)';ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#fff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('GO',cx,cy)}
 
-// Core spin
-function spin(){
-  if(isSpinning||state.items.length<2){if(state.items.length<2)alert('请至少输入2个选项！');return}
-  isSpinning=true;document.getElementById('spinBtn').disabled=true;
-  let av=[...state.items];
-  if(state.settings.noRepeat&&state.drawnItems.size>0){av=av.filter(x=>!state.drawnItems.has(x));if(av.length<state.settings.pickCount){state.drawnItems.clear();av=[...state.items]}}
-  const winners=[],pool=[...av];
-  for(let i=0;i<Math.min(state.settings.pickCount,pool.length);i++){const idx=Math.floor(Math.random()*pool.length);winners.push(pool[idx]);pool.splice(idx,1)}
-  const wIdx=state.items.indexOf(winners[0]),sl=(Math.PI*2)/state.items.length,target=-(wIdx*sl+sl/2)+Math.PI/2,extra=(5+Math.random()*3)*Math.PI*2,total=target+extra,startAngle=currentAngle,duration=3500+Math.random()*1500,startTime=performance.now();let lastTick=-1;
-  function animate(now){const elapsed=now-startTime,progress=Math.min(elapsed/duration,1),eased=1-Math.pow(1-progress,4);currentAngle=startAngle+total*eased;const norm=((currentAngle%(Math.PI*2))+Math.PI*2)%(Math.PI*2),tickIdx=Math.floor(norm/sl);if(tickIdx!==lastTick){playTick();lastTick=tickIdx}drawWheel(currentAngle);if(progress<1)requestAnimationFrame(animate);else{isSpinning=false;document.getElementById('spinBtn').disabled=false;currentAngle=currentAngle%(Math.PI*2);onWin(winners)}}
-  requestAnimationFrame(animate);
-}
+function spin(){if(isSpinning||state.items.length<2){if(state.items.length<2)alert('请至少输入2个选项！');return}isSpinning=true;document.getElementById('spinBtn').disabled=true;let av=[...state.items];if(state.settings.noRepeat&&state.drawnItems.size>0){av=av.filter(x=>!state.drawnItems.has(x));if(av.length<state.settings.pickCount){state.drawnItems.clear();av=[...state.items]}}const winners=[],pool=[...av];for(let i=0;i<Math.min(state.settings.pickCount,pool.length);i++){const idx=Math.floor(Math.random()*pool.length);winners.push(pool[idx]);pool.splice(idx,1)}const wIdx=state.items.indexOf(winners[0]),sl=(Math.PI*2)/state.items.length,target=-(wIdx*sl+sl/2)+Math.PI/2,extra=(5+Math.random()*3)*Math.PI*2,total=target+extra,startAngle=currentAngle,duration=3500+Math.random()*1500,startTime=performance.now();let lastTick=-1;function animate(now){const elapsed=now-startTime,progress=Math.min(elapsed/duration,1),eased=1-Math.pow(1-progress,4);currentAngle=startAngle+total*eased;const norm=((currentAngle%(Math.PI*2))+Math.PI*2)%(Math.PI*2),tickIdx=Math.floor(norm/sl);if(tickIdx!==lastTick){playTick();lastTick=tickIdx}drawWheel(currentAngle);if(progress<1)requestAnimationFrame(animate);else{isSpinning=false;document.getElementById('spinBtn').disabled=false;currentAngle=currentAngle%(Math.PI*2);onWin(winners)}}requestAnimationFrame(animate)}
 function onWin(winners){playWin();winners.forEach(w=>{state.drawnItems.add(w);state.history.unshift({name:w,time:new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})})});saveState();document.getElementById('resultCard').style.display='block';document.getElementById('resultText').textContent=winners.join('、');document.getElementById('resultSub').textContent=`共 ${winners.length} 人 · 累计 ${state.history.length} 次`;if(state.settings.effect){document.getElementById('modalResultText').textContent=winners.join('、');document.getElementById('resultModal').classList.add('show');createConfetti()}renderHistory()}
 function closeModal(){document.getElementById('resultModal').classList.remove('show')}
 function createConfetti(){for(let i=0;i<40;i++){const c=document.createElement('div');c.style.cssText=`position:fixed;top:-10px;left:${Math.random()*100}vw;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;background:${COLORS[Math.floor(Math.random()*COLORS.length)]};border-radius:${Math.random()>.5?'50%':'2px'};z-index:200;pointer-events:none;animation:cf ${2+Math.random()*2}s ease-out forwards;`;document.body.appendChild(c);setTimeout(()=>c.remove(),4000)}if(!document.getElementById('cfStyle')){const s=document.createElement('style');s.id='cfStyle';s.textContent=`@keyframes cf{to{transform:translateY(100vh) rotate(${360+Math.random()*720}deg);opacity:0;}}`;document.head.appendChild(s)}}
 
+// ========== ONLINE MULTIPLAYER ==========
+function generateId(){return Math.random().toString(36).substr(2,8)}
+function generateRoomCode(){return String(Math.floor(1000+Math.random()*9000))}
+
+function createRoom(){
+  if(!db){alert('联机功能需要配置Firebase！\n请参考说明文档设置。');return}
+  myName=document.getElementById('myNameInput').value.trim()||'玩家';
+  myId=generateId();
+  roomCode=generateRoomCode();
+  isHost=true;
+  roomRef=db.ref('rooms/'+roomCode);
+  roomRef.set({
+    host:myId,
+    created:Date.now(),
+    game:null,
+    members:{[myId]:{name:myName,joined:Date.now()}},
+    gameData:{},
+    chat:{}
+  });
+  roomRef.on('value',onRoomUpdate);
+  roomRef.child('chat').orderByChild('time').limitToLast(50).on('child_added',onChatMessage);
+  showLobby();
+  addSystemChat(myName+' 创建了房间');
+}
+
+function joinRoom(){
+  if(!db){alert('联机功能需要配置Firebase！\n请参考说明文档设置。');return}
+  const code=document.getElementById('joinCodeInput').value.trim();
+  myName=document.getElementById('joinNameInput').value.trim()||'玩家';
+  if(!code||code.length!==4){alert('请输入4位房间号');return}
+  myId=generateId();
+  roomCode=code;
+  isHost=false;
+  roomRef=db.ref('rooms/'+roomCode);
+  roomRef.child('members/'+myId).set({name:myName,joined:Date.now()});
+  roomRef.on('value',onRoomUpdate);
+  roomRef.child('chat').orderByChild('time').limitToLast(50).on('child_added',onChatMessage);
+  showLobby();
+  addSystemChat(myName+' 加入了房间');
+}
+
+function leaveRoom(){
+  if(roomRef&&myId){
+    roomRef.child('members/'+myId).remove();
+    addSystemChat(myName+' 离开了房间');
+    roomRef.off();
+    roomRef=null;
+  }
+  myId=null;roomCode='';isHost=false;onlineMembers={};
+  document.getElementById('lobbyCreate').style.display='block';
+  document.getElementById('inLobby').style.display='none';
+  document.getElementById('onlineGameArea').style.display='none';
+}
+
+function showLobby(){
+  document.getElementById('lobbyCreate').style.display='none';
+  document.getElementById('inLobby').style.display='block';
+  document.getElementById('onlineGameArea').style.display='none';
+  document.getElementById('roomCodeBadge').textContent='#'+roomCode;
+  document.getElementById('roomCodeDisplay').textContent=roomCode;
+}
+
+function onRoomUpdate(snap){
+  const data=snap.val();
+  if(!data){leaveRoom();return}
+  onlineMembers=data.members||{};
+  gameData=data.gameData||{};
+  currentGame=data.game;
+  renderLobbyMembers();
+  if(currentGame){
+    document.getElementById('inLobby').style.display='none';
+    document.getElementById('onlineGameArea').style.display='block';
+    renderOnlineGame(currentGame,gameData);
+  }else{
+    document.getElementById('inLobby').style.display='block';
+    document.getElementById('onlineGameArea').style.display='none';
+  }
+}
+
+function renderLobbyMembers(){
+  const el=document.getElementById('lobbyMembers');
+  el.innerHTML=Object.entries(onlineMembers).map(([id,m])=>
+    `<div class="lobby-member${id===myId?' me':''}">${m.name}${isHost&&id!==myId?`<button class="kick" onclick="kickPlayer('${id}')">✕</button>`:''}</div>`
+  ).join('');
+}
+
+function kickPlayer(id){if(roomRef&&isHost){roomRef.child('members/'+id).remove();roomRef.child('chat').push({system:true,text:onlineMembers[id]?.name+' 被踢出了房间',time:Date.now()})}}
+
+function startOnlineGame(){
+  if(!isHost){alert('只有房主可以开始游戏');return}
+  const games=['dice','rps','quiz','vote','guess','bomb','slot','fortune','king','werewolf'];
+  const game=rand(games);
+  let gd={type:game,started:Date.now(),players:{},result:null,phase:'playing'};
+  // Init game-specific data
+  if(game==='quiz'){const q=rand(QUIZ_Q);gd.question=q;gd.answers={}}
+  if(game==='vote'){const t=rand(VOTE_TOPICS);gd.topic=t;gd.votes={}}
+  if(game==='guess'){gd.target=Math.floor(Math.random()*100)+1;gd.guesses={};gd.range=[1,100]}
+  if(game==='bomb'){gd.victim=rand(Object.keys(onlineMembers).map(id=>({id,name:onlineMembers[id].name})));gd.exploded=false}
+  if(game==='king'){const m=Object.entries(onlineMembers).map(([id,n])=>({id,name:n.name}));const si=Math.floor(Math.random()*m.length);const cw=rand(['火锅','奶茶','螺蛳粉','烧烤','炸鸡']);const sw=rand(['火锅','奶茶','螺蛳粉','烧烤','炸鸡'].filter(w=>w!==cw));gd.roles={};m.forEach((p,i)=>{gd.roles[p.id]=i===si?{role:'spy',word:sw}:{role:'civilian',word:cw}})}
+  if(game==='werewolf'){const m=Object.entries(onlineMembers).map(([id,n])=>({id,name:n.name}));const roles=[...WOLF_ROLES].slice(0,m.length);while(roles.length<m.length)roles.push('👤 村民');const sr=shuffle(roles);gd.roles={};m.forEach((p,i)=>{gd.roles[p.id]=sr[i]})}
+  roomRef.child('gameData').set(gd);
+  roomRef.child('game').set(game);
+  addSystemChat('🎮 开始游戏：'+getGameName(game));
+}
+
+function getGameName(type){
+  const names={dice:'掷骰子',rps:'石头剪刀布',quiz:'知识抢答',vote:'匿名投票',guess:'猜数字',bomb:'定时炸弹',slot:'老虎机',fortune:'今日运势',king:'谁是卧底',werewolf:'狼人杀'};
+  return names[type]||type;
+}
+
+function renderOnlineGame(game,data){
+  const el=document.getElementById('onlineGameContent');
+  document.getElementById('onlineStatusText').textContent='联机中 · '+getGameName(game);
+  if(game==='dice')renderOnlineDice(el,data);
+  else if(game==='rps')renderOnlineRps(el,data);
+  else if(game==='quiz')renderOnlineQuiz(el,data);
+  else if(game==='vote')renderOnlineVote(el,data);
+  else if(game==='guess')renderOnlineGuess(el,data);
+  else if(game==='bomb')renderOnlineBomb(el,data);
+  else if(game==='slot')renderOnlineSlot(el,data);
+  else if(game==='fortune')renderOnlineFortune(el,data);
+  else if(game==='king')renderOnlineKing(el,data);
+  else if(game==='werewolf')renderOnlineWerewolf(el,data);
+  else el.innerHTML='<div class="card"><div style="text-align:center;color:#888;">未知游戏</div></div>';
+}
+
+// --- Online Dice ---
+function renderOnlineDice(el,data){
+  const players=Object.entries(onlineMembers).map(([id,m])=>({id,name:m.name}));
+  const results=players.map(p=>{
+    const existing=data.players?.[p.id];
+    return{...p,dice:existing||Math.floor(Math.random()*6)+1};
+  });
+  const maxD=Math.max(...results.map(r=>r.dice));
+  let h='<div class="card"><div class="card-title">🎯 掷骰子比大小</div>';
+  h+='<div class="dice-area">';
+  results.forEach(r=>{h+=`<div class="dice-player"><div class="d-name">${r.name}</div><div class="d-dice">${DICE_F[r.dice-1]}</div><div class="d-score">${r.dice}点${r.dice===maxD?' 👑':''}</div></div>`});
+  h+='</div>';
+  const winners=results.filter(r=>r.dice===maxD);
+  if(winners.length===1)h+=`<div class="online-result"><div class="who">🏆 冠军</div><div class="name">${winners[0].name}</div><div class="what">${maxD}点！</div></div>`;
+  else h+=`<div class="online-result"><div class="who">🏆 平局</div><div class="name">${winners.map(w=>w.name).join(' ')}</div><div class="what">${maxD}点！</div></div>`;
+  h+='<button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="backToLobby()">返回大厅</button></div>';
+  el.innerHTML=h;
+}
+
+// --- Online RPS ---
+function renderOnlineRps(el,data){
+  const myChoice=data.players?.[myId];
+  let h='<div class="card"><div class="card-title">✊ 石头剪刀布</div>';
+  if(!myChoice){
+    h+='<div class="my-action"><div class="action-label">选择你的出拳：</div></div>';
+    h+='<div class="rps-area"><div class="rps-btn" onclick="submitRps(0)">✊</div><div class="rps-btn" onclick="submitRps(1)">✌️</div><div class="rps-btn" onclick="submitRps(2)">✋</div></div>';
+  }else{
+    const names=['✊','✌️','✋'];
+    h+='<div style="text-align:center;margin:16px 0;"><div style="font-size:13px;color:#888;">你的选择</div><div style="font-size:60px;">'+names[myChoice]+'</div></div>';
+    // Check if all chose
+    const allChosen=Object.keys(onlineMembers).every(id=>data.players?.[id]!==undefined);
+    if(allChosen){
+      h+='<div style="margin:16px 0;">';
+      Object.entries(onlineMembers).forEach(([id,m])=>{
+        const c=data.players[id];
+        h+=`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:30px;">${names[c]}</span><span style="font-weight:bold;">${m.name}</span></div>`;
+      });
+      h+='</div>';
+    }else{
+      h+='<div style="text-align:center;color:#888;font-size:13px;">等待其他玩家选择...</div>';
+    }
+  }
+  h+='<button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="backToLobby()">返回大厅</button></div>';
+  el.innerHTML=h;
+}
+function submitRps(choice){if(roomRef)roomRef.child('gameData/players/'+myId).set(choice)}
+
+// --- Online Quiz ---
+function renderOnlineQuiz(el,data){
+  const q=data.question;const myAns=data.answers?.[myId];
+  let h='<div class="card"><div class="card-title">🧠 知识抢答</div>';
+  h+=`<div class="quiz-question">${q.q}</div>`;
+  if(!myAns){
+    h+='<div class="quiz-options">';
+    q.opts.forEach(o=>{h+=`<div class="quiz-opt" onclick="submitQuiz('${o}')">${o}</div>`});
+    h+='</div>';
+  }else{
+    const correct=myAns===q.a;
+    h+=`<div style="text-align:center;margin:16px 0;"><div style="font-size:24px;">${correct?'✅':'❌'}</div><div style="font-size:18px;font-weight:bold;color:${correct?'#2ecc71':'#e74c3c'};">你的答案：${myAns}</div>${correct?'':'<div style="color:#888;margin-top:4px;">正确答案：'+q.a+'</div>'}</div>`;
+    // Show others
+    h+='<div style="margin-top:12px;">';
+    Object.entries(onlineMembers).forEach(([id,m])=>{
+      const a=data.answers?.[id];
+      if(a)h+=`<div style="font-size:13px;color:#888;">${m.name}: ${a===q.a?'✅':'❌'} ${a}</div>`;
+    });
+    h+='</div>';
+  }
+  h+='<button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="backToLobby()">返回大厅</button></div>';
+  el.innerHTML=h;
+}
+function submitQuiz(answer){if(roomRef)roomRef.child('gameData/answers/'+myId).set(answer)}
+
+// --- Online Vote ---
+function renderOnlineVote(el,data){
+  const t=data.topic;const myVote=data.votes?.[myId];
+  let h='<div class="card"><div class="card-title">📊 匿名投票</div>';
+  h+=`<div style="text-align:center;font-size:16px;font-weight:bold;margin-bottom:16px;">${t.topic}</div>`;
+  if(!myVote){
+    t.opts.forEach(o=>{h+=`<div class="quiz-opt" style="margin-bottom:8px;" onclick="submitVote('${o}')">${o}</div>`});
+  }else{
+    const votes={};t.opts.forEach(o=>votes[o]=0);
+    Object.values(data.votes||{}).forEach(v=>{if(votes[v]!==undefined)votes[v]++});
+    const maxV=Math.max(...Object.values(votes));
+    t.opts.forEach(o=>{const pct=Math.round((votes[o]/Object.keys(onlineMembers).length)*100),isMax=votes[o]===maxV,c=isMax?'#ff6b6b':'#4ecdc4';h+=`<div class="vote-bar-wrap"><div class="vote-label"><span>${o}${o===myVote?' (你)':''}</span><span>${votes[o]}票</span></div><div class="vote-bar"><div class="vote-fill" style="width:${pct}%;background:${c};">${pct}%</div></div></div>`});
+  }
+  h+='<button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="backToLobby()">返回大厅</button></div>';
+  el.innerHTML=h;
+}
+function submitVote(choice){if(roomRef)roomRef.child('gameData/votes/'+myId).set(choice)}
+
+// --- Online Guess ---
+function renderOnlineGuess(el,data){
+  const myGuess=data.guesses?.[myId];
+  let h='<div class="card"><div class="card-title">🔢 猜数字</div>';
+  h+='<div class="guess-area"><div style="font-size:14px;color:#888;">我想了一个1-100的数字</div>';
+  const range=data.range||[1,100];
+  h+=`<div class="guess-range">${range[0]} ~ ${range[1]}</div>`;
+  if(!myGuess&&myGuess!==0){
+    h+=`<input type="number" class="guess-input" id="onlineGuessInput" min="${range[0]}" max="${range[1]}" value="${Math.floor((range[0]+range[1])/2)}">`;
+    h+='<div class="guess-hint">猜猜看！</div>';
+    h+='<button class="btn btn-primary" style="width:100%;" onclick="submitGuess()">猜！</button>';
+  }else{
+    h+=`<div style="font-size:20px;margin:12px 0;">你的猜测：${myGuess}</div>`;
+    h+='<div style="color:#888;font-size:13px;">等待其他人...</div>';
+  }
+  // Show all guesses
+  if(data.guesses&&Object.keys(data.guesses).length>0){
+    h+='<div style="margin-top:12px;">';
+    Object.entries(data.guesses).forEach(([id,g])=>{h+=`<div style="font-size:13px;color:#888;">${onlineMembers[id]?.name}: ${g}</div>`});
+    h+='</div>';
+  }
+  h+='<button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="backToLobby()">返回大厅</button></div>';
+  el.innerHTML=h;
+}
+function submitGuess(){const v=parseInt(document.getElementById('onlineGuessInput').value);if(isNaN(v)){alert('请输入数字');return}if(roomRef)roomRef.child('gameData/guesses/'+myId).set(v)}
+
+// --- Online Bomb ---
+function renderOnlineBomb(el,data){
+  const victim=data.victim;const isMe=victim?.id===myId;
+  let h='<div class="card"><div class="card-title">💣 定时炸弹</div>';
+  if(!data.exploded){
+    h+='<div style="text-align:center;font-size:100px;margin:20px 0;">💣</div>';
+    h+='<div style="text-align:center;color:#888;">炸弹正在传递中...</div>';
+    if(isHost)h+='<button class="btn btn-red" style="width:100%;margin-top:12px;" onclick="detonateBomb()">💥 引爆！</button>';
+  }else{
+    h+=`<div style="text-align:center;"><div style="font-size:100px;margin:20px 0;">💥</div>`;
+    h+=`<div style="font-size:24px;font-weight:bold;color:var(--red);">${victim.name} 爆炸了！</div>`;
+    h+=`<div style="font-size:13px;color:#888;margin-top:8px;">接受惩罚！</div></div>`;
+  }
+  h+='<button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="backToLobby()">返回大厅</button></div>';
+  el.innerHTML=h;
+}
+function detonateBomb(){if(roomRef)roomRef.child('gameData/exploded').set(true)}
+
+// --- Online Slot ---
+function renderOnlineSlot(el,data){
+  let h='<div class="card"><div class="card-title">🎰 老虎机</div>';
+  h+='<div class="slot-reels"><div class="slot-reel" id="oslot1">🍒</div><div class="slot-reel" id="oslot2">🍒</div><div class="slot-reel" id="oslot3">🍒</div></div>';
+  if(!data.result){
+    h+='<div style="text-align:center;margin:12px 0;"><button class="btn btn-primary" onclick="pullSlot()">🎰 拉杆！</button></div>';
+  }else{
+    const r=data.result;
+    h+=`<div style="text-align:center;margin:12px 0;"><div style="font-size:40px;">${r[0]} ${r[1]} ${r[2]}</div></div>`;
+    if(r[0]===r[1]&&r[1]===r[2])h+=`<div class="online-result"><div class="what">🎉🎉🎉 JACKPOT！</div></div>`;
+    else if(r[0]===r[1]||r[1]===r[2]||r[0]===r[2])h+=`<div class="online-result"><div class="what">✨ 两个一样！</div></div>`;
+    else h+='<div style="text-align:center;color:#888;">没中奖，再试试！</div>';
+  }
+  h+='<button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="backToLobby()">返回大厅</button></div>';
+  el.innerHTML=h;
+}
+function pullSlot(){const r=[rand(SLOT_EMOJIS),rand(SLOT_EMOJIS),rand(SLOT_EMOJIS)];if(roomRef)roomRef.child('gameData/result').set(r)}
+
+// --- Online Fortune ---
+function renderOnlineFortune(el,data){
+  let h='<div class="card"><div class="card-title">🔮 今日运势</div>';
+  const fortunes=data.fortunes||{};
+  if(!fortunes[myId]){
+    h+='<div style="text-align:center;"><button class="btn btn-primary" onclick="drawFortune()">🔮 抽取运势</button></div>';
+  }
+  if(Object.keys(fortunes).length>0){
+    h+='<div style="margin-top:12px;">';
+    Object.entries(onlineMembers).forEach(([id,m])=>{
+      const f=fortunes[id];
+      if(f)h+=`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:24px;">${f.emoji}</span><span style="font-weight:bold;">${m.name}</span><span style="color:${f.score>=0?'var(--gold)':'#e74c3c'};flex:1;">${f.level} - ${f.desc}</span></div>`;
+    });
+    h+='</div>';
+  }
+  h+='<button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="backToLobby()">返回大厅</button></div>';
+  el.innerHTML=h;
+}
+function drawFortune(){const f=rand(LUCK_F);if(roomRef)roomRef.child('gameData/fortunes/'+myId).set(f)}
+
+// --- Online King ---
+function renderOnlineKing(el,data){
+  const myRole=data.roles?.[myId];
+  let h='<div class="card"><div class="card-title">👑 谁是卧底</div>';
+  if(myRole){
+    h+=`<div style="text-align:center;margin:16px 0;"><div style="font-size:13px;color:#888;">你的身份</div><div style="font-size:40px;margin:8px 0;">${myRole.role==='spy'?'🕵️':'👤'}</div><div style="font-size:20px;font-weight:bold;color:${myRole.role==='spy'?'#e74c3c':'#2ecc71'};">${myRole.role==='spy'?'卧底':'平民'}</div><div style="font-size:16px;color:var(--gold);margin-top:8px;">你的词：${myRole.word}</div></div>`;
+  }
+  h+='<button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="backToLobby()">返回大厅</button></div>';
+  el.innerHTML=h;
+}
+
+// --- Online Werewolf ---
+function renderOnlineWerewolf(el,data){
+  const myRole=data.roles?.[myId];
+  let h='<div class="card"><div class="card-title">🐺 狼人杀</div>';
+  if(myRole){
+    const isBad=myRole.includes('狼人'),isSpecial=myRole.includes('预言家')||myRole.includes('女巫')||myRole.includes('猎人');
+    h+=`<div style="text-align:center;margin:16px 0;"><div style="font-size:13px;color:#888;">你的身份</div><div style="font-size:50px;margin:8px 0;">${isBad?'🐺':isSpecial?'🔮':'👤'}</div><div style="font-size:22px;font-weight:bold;color:${isBad?'#e74c3c':isSpecial?'#a29bfe':'#2ecc71'};">${myRole}</div></div>`;
+  }
+  h+='<button class="btn btn-outline" style="width:100%;margin-top:12px;" onclick="backToLobby()">返回大厅</button></div>';
+  el.innerHTML=h;
+}
+
+function backToLobby(){
+  if(roomRef&&isHost){roomRef.child('game').set(null);roomRef.child('gameData').set({})}
+}
+
+// --- Chat ---
+function onChatMessage(snap){
+  const msg=snap.val();if(!msg)return;
+  const box=document.getElementById('chatBox');
+  const div=document.createElement('div');
+  if(msg.system){div.className='chat-msg system';div.textContent=msg.text}
+  else{div.className='chat-msg';div.innerHTML=`<span class="chat-name">${msg.name}: </span><span class="chat-text">${msg.text}</span>`}
+  box.appendChild(div);box.scrollTop=box.scrollHeight;
+}
+function sendChat(){
+  const input=document.getElementById('chatInput'),text=input.value.trim();
+  if(!text||!roomRef)return;
+  roomRef.child('chat').push({name:myName,text,system:false,time:Date.now()});
+  input.value='';
+}
+function addSystemChat(text){if(roomRef)roomRef.child('chat').push({system:true,text,time:Date.now()})}
+function copyRoomCode(){navigator.clipboard?.writeText(roomCode).then(()=>alert('已复制房间号：'+roomCode)).catch(()=>prompt('复制房间号：',roomCode))}
+
 // ========== GROUP GAMES ==========
-function addScore(name,pts){state.scores[name]=(state.scores[name]||0)+pts;saveState();renderScoreBoard()}
-function resetScores(){if(!confirm('确定重置积分？'))return;GROUP.forEach(m=>state.scores[m]=0);saveState();renderScoreBoard()}
-function renderScoreBoard(){const sorted=GROUP.map(m=>({name:m,score:state.scores[m]||0})).sort((a,b)=>b.score-a.score);document.getElementById('scoreBoard').innerHTML=sorted.map((m,i)=>`<div class="score-item"><div class="s-emoji">${GEMOJI[m.name]}</div><div class="s-name">${m.name}</div><div class="s-score${i===0?' first':''}">${m.score}</div></div>`).join('')}
 function rand(arr){return arr[Math.floor(Math.random()*arr.length)]}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function addScore(name,pts){state.scores[name]=(state.scores[name]||0)+pts;saveState();renderScoreBoard()}
+function resetScores(){if(!confirm('确定重置积分？'))return;GROUP.forEach(m=>state.scores[m]=0);saveState();renderScoreBoard()}
+function renderScoreBoard(){const sorted=GROUP.map(m=>({name:m,score:state.scores[m]||0})).sort((a,b)=>b.score-a.score);document.getElementById('scoreBoard').innerHTML=sorted.map((m,i)=>`<div class="score-item"><div class="s-emoji">${GEMOJI[m.name]||'😄'}</div><div class="s-name">${m.name}</div><div class="s-score${i===0?' first':''}">${m.score}</div></div>`).join('')}
 
 function groupGame(type){
-  const games={
-    punishment:gamePunishment,treat:gameTreat,dice:gameDice,quiz:gameQuiz,
-    vote:gameVote,king:gameKing,drink:gameDrink,task:gameTask,
-    rps:gameRps,guess:gameGuess,order:gameOrder,sing:gameSing,
-    bomb:gameBomb,idiom:gameIdiom,milktea:gameMilktea,photo:gamePhoto,
-    drive:gameDrive,aa:gameAa,gift:gameGift,bgm:gameBgm,
-    countdown:gameCountdown,stats:gameStats,streak:gameStreak,
-    chart:gameChart,achievement:gameAchievement,mvp:gameMvp,
-    werewolf:gameWerewolf,arrow:gameArrow,slot:gameSlot,
-    tacit:gameTacit,meme:gameMeme,nickname:gameNickname,
-    fortune:gameFortune,compliment:gameCompliment,chicken:gameChicken,
-    slogan:gameSlogan,luck:gameLuck
+  const games={punishment:()=>{const p=rand(GROUP),isT=Math.random()>.5,q=isT?rand(TRUTH_Q):rand(DARE_Q);showGroupResult(isT?'💭 真心话':'🔥 大冒险',GEMOJI[p]||'😄',p,q,'答对加1分');addScore(p,1)},
+    treat:()=>{const p=rand(GROUP);showGroupResult('💰 今天谁请客','💸',p,'恭喜你成为天选买单人！','扣2分');addScore(p,-2)},
+    dice:()=>{const results=GROUP.map(m=>{const d=Math.floor(Math.random()*6)+1;return{name:m,dice:d,face:DICE_F[d-1]}});const maxD=Math.max(...results.map(r=>r.dice)),winners=results.filter(r=>r.dice===maxD);let h='<div class="dice-area">';results.forEach(r=>{h+=`<div class="dice-player"><div class="d-name">${GEMOJI[r.name]||'😄'} ${r.name}</div><div class="d-dice">${r.face}</div><div class="d-score">${r.dice}点${r.dice===maxD?' 👑':''}</div></div>`});h+='</div>';if(winners.length===1){h+=`<div class="online-result"><div class="who">🏆 冠军</div><div class="name">${winners[0].name}</div><div class="what">${maxD}点！+3分</div></div>`;addScore(winners[0].name,3)}else{h+=`<div class="online-result"><div class="who">🏆 平局</div><div class="name">${winners.map(w=>w.name).join(' ')}</div><div class="what">${maxD}点！各+2分</div></div>`;winners.forEach(w=>addScore(w.name,2))}showGroupModal('🎲 掷骰子比大小',h)},
+    quiz:()=>{quizAnswered=false;const q=rand(QUIZ_Q),buzzer=rand(GROUP);let h=`<div class="quiz-question">${q.q}</div><div class="quiz-options">`;q.opts.forEach(o=>{h+=`<div class="quiz-opt" onclick="quizPick(this,'${o}','${q.a}','${buzzer}')">${o}</div>`});h+=`</div><div id="quizResult" style="margin-top:12px;text-align:center;"></div><div style="margin-top:16px;padding:12px;background:rgba(255,215,0,.1);border-radius:10px;text-align:center;"><div style="font-size:12px;color:#888;">🔔 ${GEMOJI[buzzer]||'😄'} ${buzzer} 最先抢答！</div></div>`;showGroupModal('🧠 知识抢答',h)},
+    vote:()=>{const t=rand(VOTE_TOPICS),votes={};t.opts.forEach(o=>votes[o]=0);GROUP.forEach(()=>{votes[rand(t.opts)]++});const maxV=Math.max(...Object.values(votes));let h=`<div style="text-align:center;font-size:16px;font-weight:bold;margin-bottom:16px;">${t.topic}</div>`;t.opts.forEach(o=>{const pct=Math.round((votes[o]/GROUP.length)*100),isMax=votes[o]===maxV,c=isMax?'#ff6b6b':'#4ecdc4';h+=`<div class="vote-bar-wrap"><div class="vote-label"><span>${o}</span><span>${votes[o]}票</span></div><div class="vote-bar"><div class="vote-fill" style="width:${pct}%;background:${c};">${pct}%</div></div></div>`});showGroupModal('📊 匿名投票',h)},
+    king:()=>{const m=shuffle(GROUP),si=Math.floor(Math.random()*m.length),cw=rand(['火锅','奶茶','螺蛳粉','烧烤','炸鸡']),sw=rand(['火锅','奶茶','螺蛳粉','烧烤','炸鸡'].filter(w=>w!==cw));let h='<div style="text-align:center;margin-bottom:16px;"><div style="font-size:14px;color:#888;">点击翻牌</div></div>';m.forEach((p,i)=>{const isSpy=i===si;h+=`<div class="king-role${isSpy?' spy':''}" onclick="this.querySelector('.k-role').style.display=this.querySelector('.k-role').style.display==='none'?'block':'none'" style="cursor:pointer;"><span style="font-size:20px;">${GEMOJI[p]||'😄'}</span><span class="k-name">${p}</span><span class="k-role" style="display:none;">${isSpy?'🕵️ 卧底（'+sw+'）':'👤 平民（'+cw+'）'}</span></div>`});showGroupModal('👑 谁是卧底',h)},
+    rps:()=>{let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">✊✌️✋</div><div class="rps-area"><div class="rps-btn" onclick="playRps(0)">✊</div><div class="rps-btn" onclick="playRps(1)">✌️</div><div class="rps-btn" onclick="playRps(2)">✋</div></div><div id="rpsResult"></div>';showGroupModal('✊ 石头剪刀布',h)},
+    guess:()=>{let h='<div class="guess-area"><div style="font-size:14px;color:#888;">猜1-100的数字</div><div class="guess-range" id="guessRange">1 ~ 100</div><input type="number" class="guess-input" id="guessInput" value="50"><div class="guess-hint" id="guessHint">试试！</div><button class="btn btn-primary" style="width:100%;" onclick="doGuess()">猜！</button></div>';showGroupModal('🔢 猜数字',h)},
+    order:()=>{const s=shuffle(GROUP);let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">📱 抽签定顺序</div>';s.forEach((m,i)=>{h+=`<div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:24px;font-weight:bold;color:var(--gold);min-width:30px;">#${i+1}</span><span style="font-size:20px;">${GEMOJI[m]||'😄'}</span><span style="font-weight:bold;">${m}</span></div>`});showGroupModal('📱 抽签定顺序',h)},
+    sing:()=>{const p=rand(GROUP),song=rand(SONGS);showGroupResult('🎤 K歌挑战',GEMOJI[p]||'😄',p,song,'请开始你的表演！')},
+    bomb:()=>{const p=rand(GROUP);showGroupResult('💣 定时炸弹',GEMOJI[p]||'😄',p,'💥 爆炸了！接受惩罚！',rand(DARE_Q));addScore(p,-1)},
+    idiom:()=>{const idioms=['一心一意','意气风发','发扬光大','大智若愚','愚公移山','山清水秀'];const start=rand(idioms),p=rand(GROUP);let h=`<div style="text-align:center;"><div style="font-size:28px;font-weight:bold;color:var(--gold);margin:12px 0;">${start}</div><div style="font-size:13px;color:#888;">以「${start[start.length-1]}」开头</div><div style="margin-top:12px;padding:12px;background:rgba(255,107,107,.1);border-radius:10px;">${GEMOJI[p]||'😄'} ${p} 先来！接不上罚一杯 🍺</div></div>`;showGroupModal('🗣 成语接龙',h)},
+    milktea:()=>{const p=rand(GROUP);showGroupResult('🧋 奶茶签到',GEMOJI[p]||'😄',p,'今天你请奶茶！','🧋');addScore(p,-1)},
+    drive:()=>{const p=rand(GROUP);showGroupResult('🚗 谁来开车',GEMOJI[p]||'😄',p,'今天你当司机！','🚗');addScore(p,-1)},
+    aa:()=>{let h=`<div style="text-align:center;"><div style="font-size:14px;color:#888;margin-bottom:12px;">💰 AA计算器</div><input type="number" id="aaTotal" placeholder="输入总金额" style="margin-bottom:12px;" oninput="calcAA()"><div class="aa-total" id="aaResult">输入金额后自动计算</div><div style="font-size:12px;color:#888;">共 ${GROUP.length} 人</div></div>`;showGroupModal('💰 AA计算器',h)},
+    gift:()=>{const s=shuffle(GROUP),pairs=[];for(let i=0;i<s.length;i++)pairs.push({from:s[i],to:s[(i+1)%s.length]});let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">🎁 礼物交换</div>';pairs.forEach(p=>{h+=`<div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span>${GEMOJI[p.from]||'😄'} ${p.from}</span><span style="color:var(--gold);">→</span><span>${GEMOJI[p.to]||'😄'} ${p.to}</span></div>`});showGroupModal('🎁 礼物交换',h)},
+    bgm:()=>{showGroupResult('🎵 随机BGM','🎵','聚会BGM',rand(SONGS),'马上播放！🎶')},
+    drink:()=>{const p=rand(GROUP),a=rand(['喝一杯！','喝半杯！','干了这杯！','找人代喝！']);showGroupResult('🍺 喝酒轮盘','🍻',p,a,'果汁也行~');addScore(p,-1)},
+    werewolf:()=>{const m=shuffle(GROUP),roles=shuffle(WOLF_ROLES);let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">点击翻牌</div>';m.forEach((p,i)=>{const role=roles[i]||'👤 村民';const isBad=role.includes('狼人'),isSp=role.includes('预言家')||role.includes('女巫')||role.includes('猎人');const cls=isBad?'bad':isSp?'special':'good';h+=`<div class="wolf-card ${cls}" onclick="this.querySelector('.w-role').style.display=this.querySelector('.w-role').style.display==='none'?'block':'none'" style="cursor:pointer;display:block;text-align:center;margin-bottom:8px;padding:12px;"><span style="font-size:20px;">${GEMOJI[p]||'😄'}</span> <strong>${p}</strong> <span class="w-role" style="display:none;margin-left:8px;">${role}</span></div>`});showGroupModal('🐺 狼人杀',h)},
+    slot:()=>{let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">🎰 老虎机</div><div class="slot-reels"><div class="slot-reel" id="slot1">🍒</div><div class="slot-reel" id="slot2">🍒</div><div class="slot-reel" id="slot3">🍒</div></div><div style="text-align:center;margin:12px 0;"><button class="btn btn-primary" onclick="spinSlot()">🎰 拉杆！</button></div><div id="slotResult" style="text-align:center;"></div>';showGroupModal('🎰 老虎机',h)},
+    fortune:()=>{const p=rand(GROUP),f=rand(LUCK_F);let h=`<div class="fortune-card"><div class="fortune-emoji">${f.emoji}</div><div class="fortune-level">${f.level}</div><div class="fortune-desc">${f.desc}</div></div>`;showGroupModal('🔮 '+p+' 今日运势',h);addScore(p,f.score)},
+    nickname:()=>{let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">🏷 随机群昵称</div>';GROUP.forEach(m=>{h+=`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:20px;">${GEMOJI[m]||'😄'}</span><span style="font-weight:bold;">${m}</span><span style="color:var(--gold);flex:1;text-align:right;">「${rand(NICKNAMES)}」</span></div>`});showGroupModal('🏷 群昵称生成',h)},
+    compliment:()=>{const p=rand(GROUP);showGroupResult('💝 彩虹屁',GEMOJI[p]||'😄',p,rand(COMPLIMENTS),'✨');addScore(p,1)},
+    chicken:()=>{showGroupResult('🐔 毒鸡汤','🐔','今日鸡汤',rand(CHICKEN),'干了这碗 ☠️')},
+    slogan:()=>{showGroupResult('📢 群口号','📢','今日口号',rand(SLOGANS),'💪')},
+    luck:()=>{let h='<div style="text-align:center;margin-bottom:16px;font-size:14px;color:#888;">🍀 全员运势</div>';GROUP.forEach(m=>{const f=rand(LUCK_F);h+=`<div style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:24px;">${f.emoji}</span><span style="font-weight:bold;min-width:50px;">${GEMOJI[m]||'😄'} ${m}</span><span style="color:${f.score>=0?'var(--gold)':'#e74c3c'};flex:1;">${f.level} - ${f.desc}</span></div>`;addScore(m,f.score)});showGroupModal('🍀 全员运势',h)}
   };
   if(games[type])games[type]();
 }
 
-// 1. 真心话大冒险
-function gamePunishment(){
-  const p=rand(GROUP),isT=Math.random()>.5,q=isT?rand(TRUTH_Q):rand(DARE_Q),t=isT?'💭 真心话':'🔥 大冒险';
-  showGroupResult(t,GEMOJI[p],p,q,'答对加1分');addScore(p,1);
-}
+function playRps(my){const names=['✊','✌️','✋'];const opp=Math.floor(Math.random()*3);const res=my===opp?'draw':(my===0&&opp===2)||(my===1&&opp===0)||(my===2&&opp===1)?'win':'lose';let h=`<div style="display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0;"><div style="text-align:center;"><div style="font-size:60px;">${names[my]}</div><div style="font-size:12px;color:#888;">你</div></div><div style="font-size:24px;">VS</div><div style="text-align:center;"><div style="font-size:60px;">${names[opp]}</div><div style="font-size:12px;color:#888;">电脑</div></div></div>`;if(res==='win'){h+=`<div class="online-result"><div class="what">🎉 你赢了！+1分</div></div>`;addScore(GROUP[0],1)}else if(res==='lose'){h+=`<div class="online-result"><div class="what">😢 你输了！</div></div>`}else{h+=`<div class="online-result"><div class="what">🤝 平局！</div></div>`}document.getElementById('rpsResult').innerHTML=h}
 
-// 2. 今天谁请客
-function gameTreat(){const p=rand(GROUP);showGroupResult('💰 今天谁请客','💸',p,'恭喜你成为天选买单人！','请客光荣！扣2分安慰');addScore(p,-2)}
-
-// 3. 掷骰子比大小
-function gameDice(){
-  const results=GROUP.map(m=>{const d=Math.floor(Math.random()*6)+1;return{name:m,dice:d,face:DICE_F[d-1]}});
-  const maxD=Math.max(...results.map(r=>r.dice)),winners=results.filter(r=>r.dice===maxD);
-  let h='<div class="dice-area">';
-  results.forEach(r=>{h+=`<div class="dice-player"><div class="d-name">${GEMOJI[r.name]} ${r.name}</div><div class="d-dice">${r.face}</div><div class="d-score">${r.dice}点${r.dice===maxD?' 👑':''}</div></div>`});
-  h+='</div>';
-  if(winners.length===1){h+=`<div class="fun-result"><div class="who">🏆 冠军</div><div class="name">${GEMOJI[winners[0].name]} ${winners[0].name}</div><div class="what">${maxD}点！+3分</div></div>`;addScore(winners[0].name,3)}
-  else{h+=`<div class="fun-result"><div class="who">🏆 平局</div><div class="name">${winners.map(w=>GEMOJI[w.name]+w.name).join(' ')}</div><div class="what">${maxD}点！各+2分</div></div>`;winners.forEach(w=>addScore(w.name,2))}
-  showGroupModal('🎲 掷骰子比大小',h);
-}
-
-// 4. 知识抢答
-function gameQuiz(){
-  quizAnswered=false;const q=rand(QUIZ_Q);const buzzer=rand(GROUP);
-  let h=`<div class="quiz-question">${q.q}</div><div class="quiz-options">`;
-  q.opts.forEach(o=>{h+=`<div class="quiz-opt" onclick="quizPick(this,'${o}','${q.a}','${buzzer}')">${o}</div>`});
-  h+=`</div><div id="quizResult" style="margin-top:12px;text-align:center;"></div>`;
-  h+=`<div style="margin-top:16px;padding:12px;background:rgba(255,215,0,.1);border-radius:10px;text-align:center;"><div style="font-size:12px;color:#888;">🔔 ${GEMOJI[buzzer]} ${buzzer} 最先抢答！</div></div>`;
-  showGroupModal('🧠 知识抢答',h);
-}
-function quizPick(el,chosen,correct,buzzer){
-  if(quizAnswered)return;quizAnswered=true;
-  document.querySelectorAll('.quiz-opt').forEach(o=>{if(o.textContent===correct)o.classList.add('correct');if(o.textContent===chosen&&chosen!==correct)o.classList.add('wrong')});
-  const r=document.getElementById('quizResult');
-  if(chosen===correct){r.innerHTML=`<div style="color:#2ecc71;font-size:16px;font-weight:bold;">✅ 回答正确！${GEMOJI[buzzer]} ${buzzer} +2分</div>`;addScore(buzzer,2)}
-  else r.innerHTML=`<div style="color:#e74c3c;font-size:16px;font-weight:bold;">❌ 答错了！正确答案：${correct}</div>`;
-}
-
-// 5. 匿名投票
-function gameVote(){
-  const t=rand(VOTE_TOPICS),votes={};t.opts.forEach(o=>votes[o]=0);
-  GROUP.forEach(()=>{votes[rand(t.opts)]++});
-  const maxV=Math.max(...Object.values(votes));
-  let h=`<div style="text-align:center;font-size:16px;font-weight:bold;margin-bottom:16px;">${t.topic}</div>`;
-  t.opts.forEach(o=>{const pct=Math.round((votes[o]/GROUP.length)*100),isMax=votes[o]===maxV,c=isMax?'#ff6b6b':'#4ecdc4';h+=`<div class="vote-bar-wrap"><div class="vote-label"><span>${o}</span><span>${votes[o]}票</span></div><div class="vote-bar"><div class="vote-fill" style="width:${pct}%;background:${c};">${pct}%</div></div></div>`});
-  h+=`<div style="text-align:center;margin-top:12px;font-size:12px;color:#888;">投票结果仅供参考 😄</div>`;
-  showGroupModal('📊 匿名投票',h);
-}
-
-// 6. 谁是卧底
-function gameKing(){
-  const m=shuffle(GROUP),spyIdx=Math.floor(Math.random()*m.length);
-  const cw=rand(['火锅','奶茶','螺蛳粉','烧烤','炸鸡','寿司','麻辣烫','饺子']),sw=rand(['火锅','奶茶','螺蛳粉','烧烤','炸鸡','寿司','麻辣烫','饺子'].filter(w=>w!==cw));
-  let h='<div style="text-align:center;margin-bottom:16px;"><div style="font-size:14px;color:#888;">身份已分配（点击翻牌）</div></div>';
-  m.forEach((p,i)=>{const isSpy=i===spyIdx;h+=`<div class="king-role${isSpy?' spy':''}" onclick="this.querySelector('.k-role').style.display=this.querySelector('.k-role').style.display==='none'?'block':'none'" style="cursor:pointer;"><span style="font-size:20px;">${GEMOJI[p]}</span><span class="k-name">${p}</span><span class="k-role" style="display:none;">${isSpy?'🕵️ 卧底（词：'+sw+'）':'👤 平民（词：'+cw+'）'}</span></div>`});
-  h+=`<div style="text-align:center;margin-top:12px;font-size:12px;color:#888;">卧底和平民的词相似但不同，找出卧底！</div>`;
-  showGroupModal('👑 谁是卧底',h);
-}
-
-// 7. 喝酒轮盘
-function gameDrink(){const p=rand(GROUP),a=rand(['喝一杯！','喝半杯！','干了这杯！','连喝三口！','以茶代酒也行','找人代喝！','加满再喝！','先干为敬！']);showGroupResult('🍺 喝酒轮盘','🍻',p,a,'不喝酒的可以用果汁代替哦~');addScore(p,-1)}
-
-// 8. 随机任务
-function gameTask(){
-  const tasks=['负责拍照记录','负责点菜','负责买单（然后AA）','负责叫车','负责活跃气氛','负责倒水','负责结账对账','负责找餐厅','负责订位','负责带零食','负责唱歌开场','负责讲个笑话','负责给大家倒饮料','负责发朋友圈宣传'];
-  const s=shuffle(GROUP);
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">📋 今日任务分配</div>';
-  s.forEach((m,i)=>{h+=`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:20px;">${GEMOJI[m]}</span><span style="font-weight:bold;min-width:50px;">${m}</span><span style="color:var(--gold);flex:1;">${tasks[i%tasks.length]}</span></div>`});
-  showGroupModal('📋 随机任务分配',h);
-}
-
-// 9. 石头剪刀布锦标赛
-function gameRps(){
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">✊✌️✋ 石头剪刀布锦标赛</div>';
-  h+='<div style="text-align:center;margin-bottom:12px;font-size:13px;">选择你的出拳：</div>';
-  h+='<div class="rps-area"><div class="rps-btn" onclick="playRps(0)">✊</div><div class="rps-btn" onclick="playRps(1)">✌️</div><div class="rps-btn" onclick="playRps(2)">✋</div></div>';
-  h+='<div id="rpsResult"></div>';
-  showGroupModal('✊ 石头剪刀布',h);
-}
-function playRps(my){
-  const names=['✊','✌️','✋'];const opp=Math.floor(Math.random()*3);
-  const res=my===opp?'draw':(my===0&&opp===2)||(my===1&&opp===0)||(my===2&&opp===1)?'win':'lose';
-  let h=`<div class="rps-vs"><div class="rps-side"><div class="rps-emoji">${names[my]}</div><div class="rps-name">你</div></div><div style="font-size:24px;">VS</div><div class="rps-side"><div class="rps-emoji">${names[opp]}</div><div class="rps-name">电脑</div></div></div>`;
-  if(res==='win'){h+=`<div class="fun-result"><div class="what">🎉 你赢了！+1分</div></div>`;addScore(GROUP[0],1)}
-  else if(res==='lose'){h+=`<div class="fun-result"><div class="what">😢 你输了！</div></div>`}
-  else{h+=`<div class="fun-result"><div class="what">🤝 平局！</div></div>`}
-  document.getElementById('rpsResult').innerHTML=h;
-}
-
-// 10. 猜数字
 let guessNum=0,guessRange=[1,100],guessTries=0;
-function gameGuess(){
-  guessNum=Math.floor(Math.random()*100)+1;guessRange=[1,100];guessTries=0;
-  let h=`<div class="guess-area"><div style="font-size:14px;color:#888;margin-bottom:8px;">我想了一个1-100的数字，猜猜看？</div><div class="guess-range" id="guessRange">1 ~ 100</div><input type="number" class="guess-input" id="guessInput" min="1" max="100" value="50"><div class="guess-hint" id="guessHint">试试你的运气！</div><button class="btn btn-primary" style="width:100%;" onclick="doGuess()">猜！</button></div>`;
-  showGroupModal('🔢 猜数字',h);
-}
-function doGuess(){
-  const input=document.getElementById('guessInput'),val=parseInt(input.value),hint=document.getElementById('guessHint'),range=document.getElementById('guessRange');
-  if(isNaN(val)||val<1||val>100){hint.textContent='请输入1-100的数字！';return}
-  guessTries++;
-  if(val===guessNum){hint.innerHTML=`<div style="color:#2ecc71;font-size:18px;font-weight:bold;">🎉 猜对了！答案就是 ${guessNum}！用了 ${guessTries} 次</div>`;input.disabled=true}
-  else if(val<guessNum){guessRange[0]=Math.max(guessRange[0],val+1);hint.textContent=`📈 太小了！再大一点`;range.textContent=`${guessRange[0]} ~ ${guessRange[1]}`;input.min=guessRange[0];input.value=Math.floor((guessRange[0]+guessRange[1])/2)}
-  else{guessRange[1]=Math.min(guessRange[1],val-1);hint.textContent=`📉 太大了！再小一点`;range.textContent=`${guessRange[0]} ~ ${guessRange[1]}`;input.max=guessRange[1];input.value=Math.floor((guessRange[0]+guessRange[1])/2)}
-}
+function doGuess(){const input=document.getElementById('guessInput'),val=parseInt(input.value),hint=document.getElementById('guessHint'),range=document.getElementById('guessRange');if(!guessNum)guessNum=Math.floor(Math.random()*100)+1;if(isNaN(val))return;guessTries++;if(val===guessNum){hint.innerHTML=`<div style="color:#2ecc71;font-size:18px;font-weight:bold;">🎉 猜对了！${guessNum}！${guessTries}次</div>`;input.disabled=true}else if(val<guessNum){guessRange[0]=Math.max(guessRange[0],val+1);hint.textContent='📈 太小了！';range.textContent=`${guessRange[0]} ~ ${guessRange[1]}`;input.value=Math.floor((guessRange[0]+guessRange[1])/2)}else{guessRange[1]=Math.min(guessRange[1],val-1);hint.textContent='📉 太大了！';range.textContent=`${guessRange[0]} ~ ${guessRange[1]}`;input.value=Math.floor((guessRange[0]+guessRange[1])/2)}}
 
-// 11. 抽签定顺序
-function gameOrder(){
-  const s=shuffle(GROUP);
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">📱 抽签定顺序</div>';
-  s.forEach((m,i)=>{h+=`<div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:24px;font-weight:bold;color:var(--gold);min-width:30px;">#${i+1}</span><span style="font-size:20px;">${GEMOJI[m]}</span><span style="font-weight:bold;">${m}</span></div>`});
-  showGroupModal('📱 抽签定顺序',h);
-}
+function spinSlot(){const r1=document.getElementById('slot1'),r2=document.getElementById('slot2'),r3=document.getElementById('slot3');r1.classList.add('spinning');r2.classList.add('spinning');r3.classList.add('spinning');const res=[rand(SLOT_EMOJIS),rand(SLOT_EMOJIS),rand(SLOT_EMOJIS)];setTimeout(()=>{r1.textContent=res[0];r1.classList.remove('spinning')},500);setTimeout(()=>{r2.textContent=res[1];r2.classList.remove('spinning')},1000);setTimeout(()=>{r3.textContent=res[2];r3.classList.remove('spinning');const el=document.getElementById('slotResult');if(res[0]===res[1]&&res[1]===res[2]){el.innerHTML=`<div class="online-result"><div class="what">🎉🎉🎉 JACKPOT！</div></div>`;createConfetti()}else if(res[0]===res[1]||res[1]===res[2]||res[0]===res[2]){el.innerHTML=`<div class="online-result"><div class="what">✨ 两个一样！</div></div>`}else{el.innerHTML='<div style="color:#888;font-size:13px;">没中奖</div>'}},1500)}
 
-// 12. K歌挑战
-function gameSing(){
-  const p=rand(GROUP),song=rand(SONGS);
-  showGroupResult('🎤 K歌挑战',GEMOJI[p],p,song,'请开始你的表演！🎤');
-}
+function calcAA(){const total=parseFloat(document.getElementById('aaTotal').value),el=document.getElementById('aaResult');if(isNaN(total)||total<=0){el.textContent='请输入有效金额';return}el.innerHTML=`<div style="font-size:13px;color:#888;">每人应付</div><div style="font-size:36px;font-weight:bold;color:var(--red);">¥${(total/GROUP.length).toFixed(2)}</div>`}
 
-// 13. 定时炸弹
-function gameBomb(){
-  const p=rand(GROUP);
-  let h='<div style="text-align:center;">';
-  h+=`<div style="font-size:14px;color:#888;margin-bottom:12px;">💣 炸弹在 ${GEMOJI[p]} ${p} 手里爆炸了！</div>`;
-  h+=`<div style="font-size:100px;margin:20px 0;">💥</div>`;
-  h+=`<div style="font-size:20px;font-weight:bold;color:var(--red);">${p} 要接受惩罚！</div>`;
-  h+=`<div style="font-size:13px;color:#888;margin-top:8px;">${rand(DARE_Q)}</div>`;
-  h+='</div>';
-  showGroupModal('💣 定时炸弹',h);
-  addScore(p,-1);
-}
+function quizPick(el,chosen,correct,buzzer){if(quizAnswered)return;quizAnswered=true;document.querySelectorAll('.quiz-opt').forEach(o=>{if(o.textContent===correct)o.classList.add('correct');if(o.textContent===chosen&&chosen!==correct)o.classList.add('wrong')});const r=document.getElementById('quizResult');if(chosen===correct){r.innerHTML=`<div style="color:#2ecc71;font-size:16px;font-weight:bold;">✅ 正确！${buzzer} +2分</div>`;addScore(buzzer,2)}else r.innerHTML=`<div style="color:#e74c3c;font-size:16px;font-weight:bold;">❌ 答错了！正确：${correct}</div>`}
 
-// 14. 成语接龙
-function gameIdiom(){
-  const idioms=['一心一意','意气风发','发扬光大','大智若愚','愚公移山','山清水秀','秀色可餐','餐风露宿','宿弊一清','清风明月','月明星稀','稀奇古怪','怪力乱神','神通广大','大快人心','心花怒放','放虎归山','山高水长','长驱直入','入木三分'];
-  const start=rand(idioms),p=rand(GROUP);
-  let h=`<div style="text-align:center;"><div style="font-size:14px;color:#888;margin-bottom:8px;">🗣 成语接龙</div>`;
-  h+=`<div style="font-size:28px;font-weight:bold;color:var(--gold);margin:12px 0;">${start}</div>`;
-  h+=`<div style="font-size:13px;color:#888;">以「${start[start.length-1]}」开头接龙</div>`;
-  h+=`<div style="margin-top:12px;padding:12px;background:rgba(255,107,107,.1);border-radius:10px;"><span style="font-size:20px;">${GEMOJI[p]}</span> <strong>${p}</strong> 先来！接不上罚一杯 🍺</div>`;
-  h+='</div>';
-  showGroupModal('🗣 成语接龙',h);
-}
-
-// 15. 奶茶签到
-function gameMilktea(){
-  const p=rand(GROUP);
-  showGroupResult('🧋 奶茶签到',GEMOJI[p],p,'今天你请奶茶！','🧋🧋🧋');
-  addScore(p,-1);
-}
-
-// 16. 群相册
-function gamePhoto(){
-  const p=rand(GROUP);
-  showGroupResult('📸 群相册',GEMOJI[p],p,'今天你负责拍照记录！','📸 记得拍好看的~');
-}
-
-// 17. 谁来开车
-function gameDrive(){
-  const p=rand(GROUP);
-  showGroupResult('🚗 谁来开车',GEMOJI[p],p,'今天你当司机！','🚗 安全驾驶，滴酒不沾');
-  addScore(p,-1);
-}
-
-// 18. AA计算器
-function gameAa(){
-  let h=`<div style="text-align:center;"><div style="font-size:14px;color:#888;margin-bottom:12px;">💰 AA计算器</div>`;
-  h+=`<div style="margin-bottom:12px;"><label style="font-size:13px;color:var(--text-dim);">总消费金额</label><input type="number" id="aaTotal" placeholder="输入金额" style="margin-top:6px;" oninput="calcAA()"></div>`;
-  h+=`<div class="aa-total" id="aaResult">输入金额后自动计算</div>`;
-  h+=`<div style="font-size:12px;color:#888;">共 ${GROUP.length} 人</div>`;
-  h+='</div>';
-  showGroupModal('💰 AA计算器',h);
-}
-function calcAA(){
-  const total=parseFloat(document.getElementById('aaTotal').value);
-  const el=document.getElementById('aaResult');
-  if(isNaN(total)||total<=0){el.textContent='请输入有效金额';return}
-  const per=(total/GROUP.length).toFixed(2);
-  el.innerHTML=`<div style="font-size:13px;color:#888;">每人应付</div><div class="aa-per">¥${per}</div>`;
-}
-
-// 19. 礼物交换
-function gameGift(){
-  const s=shuffle(GROUP),pairs=[];
-  for(let i=0;i<s.length;i++)pairs.push({from:s[i],to:s[(i+1)%s.length]});
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">🎁 礼物交换配对</div>';
-  pairs.forEach(p=>{h+=`<div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span>${GEMOJI[p.from]} ${p.from}</span><span style="color:var(--gold);">→ 送礼物给 →</span><span>${GEMOJI[p.to]} ${p.to}</span></div>`});
-  showGroupModal('🎁 礼物交换',h);
-}
-
-// 20. 随机BGM
-function gameBgm(){
-  const s=rand(SONGS);
-  showGroupResult('🎵 随机BGM','🎵','聚会BGM',s,'马上播放！🎶');
-}
-
-// 21. 倒数日
-function gameCountdown(){
-  const days=Math.floor(Math.random()*30)+1;
-  let h=`<div style="text-align:center;"><div style="font-size:14px;color:#888;margin-bottom:12px;">📅 距离下次聚会</div>`;
-  h+=`<div class="countdown-display">${days} 天</div>`;
-  h+=`<div style="font-size:13px;color:#888;">提前做好准备！🎉</div></div>`;
-  showGroupModal('📅 倒数日',h);
-}
-
-// 22. 历史战绩
-function gameStats(){
-  const sorted=GROUP.map(m=>({name:m,score:state.scores[m]||0})).sort((a,b)=>b.score-a.score);
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">🏅 历史战绩</div>';
-  const maxS=Math.max(...sorted.map(s=>Math.abs(s.score)),1);
-  sorted.forEach(s=>{
-    const pct=Math.abs(s.score)/maxS*100,c=s.score>=0?'#2ecc71':'#e74c3c';
-    h+=`<div class="chart-bar"><span class="chart-name">${GEMOJI[s.name]} ${s.name}</span><div style="flex:1;background:rgba(0,0,0,.2);border-radius:10px;overflow:hidden;height:20px;"><div style="width:${pct}%;height:100%;background:${c};border-radius:10px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:bold;">${s.score}</div></div></div>`;
-  });
-  h+=`<div style="text-align:center;margin-top:12px;font-size:12px;color:#888;">🏆 ${sorted[0].name} 暂时领先！</div>`;
-  showGroupModal('🏅 历史战绩',h);
-}
-
-// 23. 连胜记录
-function gameStreak(){
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">🔥 连胜记录</div>';
-  GROUP.forEach(m=>{
-    const s=state.streaks[m]||{win:0,lose:0,maxWin:0};
-    h+=`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:20px;">${GEMOJI[m]}</span><span style="font-weight:bold;min-width:50px;">${m}</span><span style="color:#2ecc71;">连胜 ${s.win}</span><span style="color:#e74c3c;">连败 ${s.lose}</span><span style="color:var(--gold);margin-left:auto;">最长连胜 ${s.maxWin}</span></div>`;
-  });
-  showGroupModal('🔥 连胜记录',h);
-}
-
-// 24. 积分走势
-function gameChart(){
-  const sorted=GROUP.map(m=>({name:m,score:state.scores[m]||0})).sort((a,b)=>b.score-a.score);
-  const maxS=Math.max(...sorted.map(s=>Math.abs(s.score)),1);
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">📈 积分走势</div>';
-  sorted.forEach((s,i)=>{
-    const pct=Math.abs(s.score)/maxS*100,c=['#ff6b6b','#ffd700','#4ecdc4','#74b9ff','#a29bfe'][i];
-    h+=`<div style="margin:8px 0;"><div style="display:flex;justify-content:between;font-size:12px;margin-bottom:4px;"><span>${GEMOJI[s.name]} ${s.name}</span><span style="color:${c};font-weight:bold;">${s.score}分</span></div><div style="height:24px;background:rgba(0,0,0,.2);border-radius:12px;overflow:hidden;"><div style="width:${pct}%;height:100%;background:linear-gradient(90deg,${c},${c}aa);border-radius:12px;"></div></div></div>`;
-  });
-  showGroupModal('📈 积分走势',h);
-}
-
-// 25. 成就系统
-function gameAchievement(){
-  const achievements=[
-    {icon:'🏆',name:'积分之王',desc:'累计积分最高',owner:GROUP.reduce((a,b)=>(state.scores[a]||0)>=(state.scores[b]||0)?a:b)},
-    {icon:'🍺',name:'千杯不醉',desc:'喝酒轮盘被选中最多',owner:rand(GROUP)},
-    {icon:'🎯',name:'骰子之神',desc:'掷骰子赢最多次',owner:rand(GROUP)},
-    {icon:'💰',name:'请客之王',desc:'被选中请客最多',owner:rand(GROUP)},
-    {icon:'🎤',name:'麦霸',desc:'K歌挑战被选中最多',owner:rand(GROUP)},
-    {icon:'🧠',name:'学霸',desc:'知识抢答答对最多',owner:rand(GROUP)},
-    {icon:'😊',name:'开心果',desc:'彩虹屁收到最多',owner:rand(GROUP)},
-    {icon:'💀',name:'水逆之王',desc:'运势最差的人',owner:rand(GROUP)},
-    {icon:'🐺',name:'狼人杀MVP',desc:'狼人杀获胜最多',owner:rand(GROUP)},
-    {icon:'🎰',name:'赌神',desc:'老虎机中奖最多',owner:rand(GROUP)}
-  ];
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">🏆 成就系统</div>';
-  achievements.forEach(a=>{
-    h+=`<div class="achievement"><div class="a-icon">${a.icon}</div><div class="a-info"><div class="a-name">${a.name}</div><div class="a-desc">${a.desc}</div><div class="a-owner">${GEMOJI[a.owner]} ${a.owner}</div></div></div>`;
-  });
-  showGroupModal('🏆 成就系统',h);
-}
-
-// 26. 月度MVP
-function gameMvp(){
-  const sorted=GROUP.map(m=>({name:m,score:state.scores[m]||0})).sort((a,b)=>b.score-a.score);
-  const mvp=sorted[0];
-  let h=`<div style="text-align:center;"><div style="font-size:14px;color:#888;margin-bottom:12px;">👑 本月MVP</div>`;
-  h+=`<div style="font-size:80px;margin:16px 0;">👑</div>`;
-  h+=`<div style="font-size:32px;font-weight:bold;color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,.5);">${GEMOJI[mvp.name]} ${mvp.name}</div>`;
-  h+=`<div style="font-size:18px;color:var(--primary);margin-top:8px;">${mvp.score} 分</div>`;
-  h+=`<div style="font-size:13px;color:#888;margin-top:12px;">恭喜获得本月MVP！🎉</div></div>`;
-  showGroupModal('👑 月度MVP',h);
-  createConfetti();
-}
-
-// 27. 狼人杀
-function gameWerewolf(){
-  const m=shuffle(GROUP),roles=shuffle(WOLF_ROLES);
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">🐺 狼人杀角色分配（点击翻牌）</div>';
-  m.forEach((p,i)=>{
-    const role=roles[i]||'👤 村民';
-    const isBad=role.includes('狼人'),isSpecial=role.includes('预言家')||role.includes('女巫')||role.includes('猎人');
-    const cls=isBad?'bad':isSpecial?'special':'good';
-    h+=`<div class="wolf-card ${cls}" onclick="this.querySelector('.w-role').style.display=this.querySelector('.w-role').style.display==='none'?'block':'none'" style="cursor:pointer;display:block;text-align:center;margin-bottom:8px;padding:12px;"><span style="font-size:20px;">${GEMOJI[p]}</span> <strong>${p}</strong> <span class="w-role" style="display:none;margin-left:8px;">${role}</span></div>`;
-  });
-  h+=`<div style="text-align:center;margin-top:12px;font-size:12px;color:#888;">🐺狼人2人 🔮预言家 💊女巫 🏹猎人 👤村民3人</div>`;
-  showGroupModal('🐺 狼人杀',h);
-}
-
-// 28. 射箭比赛
-function gameArrow(){
-  let h='<div style="text-align:center;margin-bottom:12px;"><div style="font-size:14px;color:#888;">🎯 射箭比赛</div></div>';
-  h+='<div style="text-align:center;margin-bottom:12px;"><button class="btn btn-primary" onclick="doArrow()">🏹 射箭！</button></div>';
-  h+='<div id="arrowResults"></div>';
-  showGroupModal('🎯 射箭比赛',h);
-}
-function doArrow(){
-  let h='<div style="margin-bottom:12px;">';
-  GROUP.forEach(m=>{
-    const score=Math.floor(Math.random()*12);
-    const emoji=ARROW_SCORES[score];
-    h+=`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:20px;">${GEMOJI[m]}</span><span style="font-weight:bold;min-width:50px;">${m}</span><span style="color:var(--gold);flex:1;">${emoji}</span><span style="font-weight:bold;">${score}分</span></div>`;
-    addScore(m,score>9?3:score>6?1:score>3?0:-1);
-  });
-  h+='</div>';
-  document.getElementById('arrowResults').innerHTML=h;
-}
-
-// 29. 老虎机
-function gameSlot(){
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">🎰 老虎机</div>';
-  h+='<div class="slot-reels"><div class="slot-reel" id="slot1">🍒</div><div class="slot-reel" id="slot2">🍒</div><div class="slot-reel" id="slot3">🍒</div></div>';
-  h+='<div style="text-align:center;margin:12px 0;"><button class="btn btn-primary" onclick="spinSlot()">🎰 拉杆！</button></div>';
-  h+='<div id="slotResult" style="text-align:center;"></div>';
-  showGroupModal('🎰 老虎机',h);
-}
-function spinSlot(){
-  const r1=document.getElementById('slot1'),r2=document.getElementById('slot2'),r3=document.getElementById('slot3');
-  r1.classList.add('spinning');r2.classList.add('spinning');r3.classList.add('spinning');
-  const res=[rand(SLOT_EMOJIS),rand(SLOT_EMOJIS),rand(SLOT_EMOJIS)];
-  setTimeout(()=>{r1.textContent=res[0];r1.classList.remove('spinning')},500);
-  setTimeout(()=>{r2.textContent=res[1];r2.classList.remove('spinning')},1000);
-  setTimeout(()=>{
-    r3.textContent=res[2];r3.classList.remove('spinning');
-    const el=document.getElementById('slotResult');
-    if(res[0]===res[1]&&res[1]===res[2]){el.innerHTML=`<div class="fun-result"><div class="what">🎉🎉🎉 JACKPOT！三个${res[0]}！+5分</div></div>`;addScore(rand(GROUP),5);createConfetti()}
-    else if(res[0]===res[1]||res[1]===res[2]||res[0]===res[2]){el.innerHTML=`<div class="fun-result"><div class="what">✨ 两个一样！+2分</div></div>`;addScore(rand(GROUP),2)}
-    else{el.innerHTML=`<div style="color:#888;font-size:13px;">没中奖，再试试！</div>`}
-  },1500);
-}
-
-// 30. 默契考验
-function gameTacit(){
-  const q=rand(TACIT_QS);
-  let h=`<div style="text-align:center;"><div class="quiz-question">${q}</div>`;
-  h+='<div style="font-size:13px;color:#888;">每个人心里想一个答案，然后同时亮出来！</div>';
-  h+='<div style="margin-top:12px;">';
-  GROUP.forEach(m=>{h+=`<div style="display:flex;align-items:center;gap:10px;padding:8px;background:rgba(0,0,0,.2);border-radius:8px;margin-bottom:4px;"><span>${GEMOJI[m]}</span><span>${m}</span><span style="color:#555;flex:1;text-align:right;">待填写...</span></div>`});
-  h+='</div></div>';
-  showGroupModal('📝 默契考验',h);
-}
-
-// 31. 表情包大赛
-function gameMeme(){
-  const themes=['表达你现在的心情','形容你的老板','描述你的周末','当你看到前任','周一早上的你','发工资那天','加班到凌晨','被夸的时候'];
-  const p=rand(GROUP),theme=rand(themes);
-  showGroupResult('🤪 表情包大赛',GEMOJI[p],p,`主题：${theme}`,'发到群里PK！看谁最搞笑');
-}
-
-// 32. 群昵称生成器
-function gameNickname(){
-  let h='<div style="text-align:center;margin-bottom:12px;font-size:14px;color:#888;">🏷 随机群昵称</div>';
-  GROUP.forEach(m=>{
-    const nick=rand(NICKNAMES);
-    h+=`<div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:20px;">${GEMOJI[m]}</span><span style="font-weight:bold;">${m}</span><span style="color:var(--gold);flex:1;text-align:right;">「${nick}」</span></div>`;
-  });
-  showGroupModal('🏷 群昵称生成',h);
-}
-
-// 33. 今日运势
-function gameFortune(){
-  const p=rand(GROUP),f=rand(LUCK_F);
-  let h=`<div class="fortune-card"><div class="fortune-emoji">${f.emoji}</div><div class="fortune-level">${f.level}</div><div class="fortune-desc">${f.desc}</div></div>`;
-  showGroupModal('🔮 '+GEMOJI[p]+p+' 今日运势',h);
-  addScore(p,f.score);
-}
-
-// 34. 彩虹屁
-function gameCompliment(){const p=rand(GROUP),c=rand(COMPLIMENTS);showGroupResult('💝 彩虹屁',GEMOJI[p],p,c,'夸人也是一种美德 ✨');addScore(p,1)}
-
-// 35. 毒鸡汤
-function gameChicken(){const c=rand(CHICKEN);showGroupResult('🐔 毒鸡汤','🐔','今日鸡汤',c,'干了这碗毒鸡汤 ☠️')}
-
-// 36. 群口号生成
-function gameSlogan(){const s=rand(SLOGANS);showGroupResult('📢 群口号','📢','今日口号',s,'一起喊出来！💪')}
-
-// 37. 今日运势(全员)
-function gameLuck(){
-  let h='<div style="text-align:center;margin-bottom:16px;font-size:14px;color:#888;">🍀 全员今日运势</div>';
-  GROUP.forEach(m=>{
-    const f=rand(LUCK_F);
-    h+=`<div style="display:flex;align-items:center;gap:10px;padding:12px;background:rgba(0,0,0,.2);border-radius:10px;margin-bottom:6px;"><span style="font-size:24px;">${f.emoji}</span><span style="font-weight:bold;min-width:50px;">${GEMOJI[m]} ${m}</span><span style="color:${f.score>=0?'var(--gold)':'#e74c3c'};flex:1;">${f.level} - ${f.desc}</span></div>`;
-    addScore(m,f.score);
-  });
-  showGroupModal('🍀 全员运势',h);
-}
-
-// Group modal helpers
-function showGroupResult(title,emoji,name,what,sub){
-  const h=`<div style="text-align:center;"><div style="font-size:60px;margin-bottom:10px;">${emoji}</div><div style="font-size:14px;color:#888;margin-bottom:4px;">${title}</div><div style="font-size:32px;font-weight:bold;color:#ff6b6b;margin-bottom:12px;text-shadow:0 0 15px rgba(255,107,107,.4);">${GEMOJI[name]} ${name}</div><div style="font-size:18px;color:var(--gold);padding:12px 20px;background:rgba(255,215,0,.1);border-radius:12px;display:inline-block;margin-bottom:12px;">${what}</div><div style="font-size:12px;color:#888;margin-top:8px;">${sub||''}</div></div>`;
-  showGroupModal(title,h);
-  if(state.settings.effect)createConfetti();
-}
+function showGroupResult(title,emoji,name,what,sub){const h=`<div style="text-align:center;"><div style="font-size:60px;margin-bottom:10px;">${emoji}</div><div style="font-size:14px;color:#888;margin-bottom:4px;">${title}</div><div style="font-size:32px;font-weight:bold;color:#ff6b6b;margin-bottom:12px;">${GEMOJI[name]||'😄'} ${name}</div><div style="font-size:18px;color:var(--gold);padding:12px 20px;background:rgba(255,215,0,.1);border-radius:12px;display:inline-block;">${what}</div><div style="font-size:12px;color:#888;margin-top:8px;">${sub||''}</div></div>`;showGroupModal(title,h);if(state.settings.effect)createConfetti()}
 function showGroupModal(title,content){document.getElementById('groupModalTitle').textContent=title;document.getElementById('groupModalContent').innerHTML=content;document.getElementById('groupModal').classList.add('show')}
 function closeGroupModal(){document.getElementById('groupModal').classList.remove('show')}
 
-// ========== UI HELPERS ==========
-function showPage(name){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+name).classList.add('active');
-  document.querySelectorAll('.icon-btn').forEach(b=>b.classList.remove('active'));
-  if(name==='group')document.getElementById('groupBtn').classList.add('active');
-  if(name==='group')renderScoreBoard();
-}
+// ========== UI ==========
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');document.querySelectorAll('.icon-btn').forEach(b=>b.classList.remove('active'));if(name==='online')document.getElementById('onlineBtn').classList.add('active');if(name==='group'){document.getElementById('groupBtn').classList.add('active');renderScoreBoard()}}
 function onInputChange(){const text=document.getElementById('itemInput').value.trim();state.items=text?text.split('\n').map(s=>s.trim()).filter(s=>s):[];document.getElementById('itemCount').textContent=state.items.length+'项';drawWheel(currentAngle);saveState()}
 function toggleSwitch(el){el.classList.toggle('on')}
 function saveSettings(){state.settings.pickCount=parseInt(document.getElementById('pickCount').value)||1;state.settings.noRepeat=document.getElementById('toggleNoRepeat').classList.contains('on');state.settings.sound=document.getElementById('toggleSound').classList.contains('on');state.settings.effect=document.getElementById('toggleEffect').classList.contains('on');saveState()}
 function loadSettingsUI(){document.getElementById('pickCount').value=state.settings.pickCount;['toggleNoRepeat','toggleSound','toggleEffect'].forEach(id=>{const el=document.getElementById(id);const key=id.replace('toggle','').toLowerCase();const map={norepeat:'noRepeat',sound:'sound',effect:'effect'};if(state.settings[map[key]])el.classList.add('on');else el.classList.remove('on')})}
-
-// Presets
-function renderPresetTabs(){
-  const tabs=document.getElementById('presetTabs');let h='';
-  Object.entries(BUILT_IN_PRESETS).forEach(([k,v])=>{h+=`<div class="tab${activePresetKey===k?' active':''}" onclick="loadPreset('${k}')">${v.name}</div>`});
-  Object.entries(state.customPresets).forEach(([k,v])=>{h+=`<div class="tab${activePresetKey===k?' active':''}" onclick="loadCustomPreset('${k}')">${v.name}</div>`});
-  tabs.innerHTML=h;
-}
+function renderPresetTabs(){let h='';Object.entries(BUILT_IN_PRESETS).forEach(([k,v])=>{h+=`<div class="tab${activePresetKey===k?' active':''}" onclick="loadPreset('${k}')">${v.name}</div>`});Object.entries(state.customPresets).forEach(([k,v])=>{h+=`<div class="tab${activePresetKey===k?' active':''}" onclick="loadCustomPreset('${k}')">${v.name}</div>`});document.getElementById('presetTabs').innerHTML=h}
 function loadPreset(key){activePresetKey=key;if(key==='group'){showPage('group');renderPresetTabs();return}const p=BUILT_IN_PRESETS[key];document.getElementById('itemInput').value=p.items.join('\n');state.items=[...p.items];document.getElementById('itemCount').textContent=state.items.length+'项';state.drawnItems.clear();drawWheel(0);currentAngle=0;saveState();renderPresetTabs();renderHistory();showPage('home')}
 function loadCustomPreset(key){activePresetKey=key;const p=state.customPresets[key];document.getElementById('itemInput').value=p.items.join('\n');state.items=[...p.items];document.getElementById('itemCount').textContent=state.items.length+'项';state.drawnItems.clear();drawWheel(0);currentAngle=0;saveState();renderPresetTabs();renderHistory();showPage('home')}
 function renderQuickPresets(){document.getElementById('quickPresets').innerHTML=Object.entries(BUILT_IN_PRESETS).filter(([k])=>k!=='group').slice(0,6).map(([k,v])=>`<div class="chip" onclick="loadPreset('${k}')">${v.name}</div>`).join('')}
@@ -993,23 +868,20 @@ function renderBuiltInPresets(){document.getElementById('builtInPresetsList').in
 function renderCustomPresets(){const el=document.getElementById('customPresetsList'),empty=document.getElementById('presetsEmpty'),keys=Object.keys(state.customPresets);if(keys.length===0){el.innerHTML='';empty.style.display='block';return}empty.style.display='none';el.innerHTML=keys.map(k=>{const p=state.customPresets[k];return`<div class="preset-item"><div class="preset-info"><div class="preset-name">${p.name}</div><div class="preset-count">${p.items.length} 项</div></div><div class="preset-actions"><button class="preset-action" onclick="loadCustomPreset('${k}')">▶</button><button class="preset-action del" onclick="deletePreset('${k}')">🗑</button></div></div>`}).join('')}
 function showAddPreset(){document.getElementById('presetNameInput').value='';document.getElementById('presetItemsInput').value='';document.getElementById('addPresetModal').classList.add('show')}
 function closePresetModal(){document.getElementById('addPresetModal').classList.remove('show')}
-function savePreset(){const name=document.getElementById('presetNameInput').value.trim(),items=document.getElementById('presetItemsInput').value.split('\n').map(s=>s.trim()).filter(s=>s);if(!name){alert('请输入预设名称');return}if(items.length<2){alert('请至少输入2个选项');return}const key='custom_'+Date.now();state.customPresets[key]={name,items};saveState();closePresetModal();renderCustomPresets();renderPresetTabs()}
-function deletePreset(key){if(!confirm('确定删除这个预设？'))return;delete state.customPresets[key];saveState();renderCustomPresets();renderPresetTabs()}
-
-// History
+function savePreset(){const name=document.getElementById('presetNameInput').value.trim(),items=document.getElementById('presetItemsInput').value.split('\n').map(s=>s.trim()).filter(s=>s);if(!name){alert('请输入名称');return}if(items.length<2){alert('至少2个选项');return}state.customPresets['custom_'+Date.now()]={name,items};saveState();closePresetModal();renderCustomPresets();renderPresetTabs()}
+function deletePreset(key){if(!confirm('确定删除？'))return;delete state.customPresets[key];saveState();renderCustomPresets();renderPresetTabs()}
 function renderHistory(){const el=document.getElementById('historyList'),empty=document.getElementById('historyEmpty'),count=document.getElementById('historyCount');count.textContent=state.history.length+'条';if(state.history.length===0){el.innerHTML='';empty.style.display='block';return}empty.style.display='none';el.innerHTML=state.history.slice(0,50).map(h=>`<div class="history-item"><span class="name">🎯 ${h.name}</span><span class="time">${h.time}</span></div>`).join('')}
-
-// Settings
 function renderThemeColors(){document.getElementById('themeColors').innerHTML=THEMES.map((t,i)=>`<div class="color-dot${state.settings.theme===i?' active':''}" style="background:${t.primary}" onclick="setTheme(${i})" title="${t.name}"></div>`).join('')}
 function setTheme(idx){state.settings.theme=idx;const t=THEMES[idx];document.documentElement.style.setProperty('--primary',t.primary);document.documentElement.style.setProperty('--primary-dark',t.dark);saveState();renderThemeColors();drawWheel(currentAngle)}
-function clearHistory(){if(!confirm('确定清空所有历史记录？'))return;state.history=[];state.drawnItems.clear();saveState();renderHistory();document.getElementById('resultCard').style.display='none'}
-function resetAll(){if(!confirm('确定重置全部数据？'))return;localStorage.removeItem('randomPickerState');location.reload()}
+function clearHistory(){if(!confirm('确定清空？'))return;state.history=[];state.drawnItems.clear();saveState();renderHistory();document.getElementById('resultCard').style.display='none'}
+function resetAll(){if(!confirm('确定重置全部？'))return;localStorage.removeItem('randomPickerState');location.reload()}
 function exportData(){const data=JSON.stringify({...state,drawnItems:[...state.drawnItems]},null,2);const blob=new Blob([data],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='随机抽取大师_数据.json';a.click();URL.revokeObjectURL(url)}
 function importData(){document.getElementById('importModal').classList.add('show')}
 function handleFile(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{try{const p=JSON.parse(ev.target.result);state={...state,...p,drawnItems:new Set(p.drawnItems||[])};saveState();initUI();alert('导入成功！')}catch(e){alert('导入失败')}};reader.readAsText(file)}
-function doImport(){try{const text=document.getElementById('importDataInput').value.trim(),p=JSON.parse(text);state={...state,...p,drawnItems:new Set(p.drawnItems||[])};saveState();initUI();document.getElementById('importModal').classList.remove('show');alert('导入成功！')}catch(e){alert('导入失败：JSON格式错误')}}
+function doImport(){try{const text=document.getElementById('importDataInput').value.trim(),p=JSON.parse(text);state={...state,...p,drawnItems:new Set(p.drawnItems||[])};saveState();initUI();document.getElementById('importModal').classList.remove('show');alert('导入成功！')}catch(e){alert('JSON格式错误')}}
+function closeNameModal(){document.getElementById('nameModal').classList.remove('show')}
+function confirmName(){myName=document.getElementById('nameModalInput').value.trim()||'玩家';closeNameModal()}
 
-// Init
 function initUI(){document.getElementById('itemInput').value=state.items.join('\n');document.getElementById('itemCount').textContent=state.items.length+'项';loadSettingsUI();renderPresetTabs();renderQuickPresets();renderBuiltInPresets();renderCustomPresets();renderHistory();renderThemeColors();renderScoreBoard();if(state.settings.theme>0)setTheme(state.settings.theme);drawWheel(currentAngle)}
 loadState();initUI();
 </script>
